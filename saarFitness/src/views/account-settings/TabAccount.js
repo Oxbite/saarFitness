@@ -12,14 +12,22 @@ import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
+import InputAdornment from '@mui/material/InputAdornment'
 import AlertTitle from '@mui/material/AlertTitle'
 import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
-
-// ** Icons Imports
+import Phone from 'mdi-material-ui/Phone'
+import EmailOutline from 'mdi-material-ui/EmailOutline'
+import AccountOutline from 'mdi-material-ui/AccountOutline'
+import MessageOutline from 'mdi-material-ui/MessageOutline'
 import Close from 'mdi-material-ui/Close'
+import HeightIcon from '@mui/icons-material/Height';
+import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import BoyIcon from '@mui/icons-material/Boy';
+
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -88,64 +96,136 @@ const TabAccount = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Username' placeholder='johnDoe' defaultValue='johnDoe' />
+          <TextField
+                fullWidth
+                label='Full Name'
+                placeholder='Full Name'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <AccountOutline />
+                    </InputAdornment>
+                  )
+                }}
+              />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Name' placeholder='John Doe' defaultValue='John Doe' />
+          <TextField
+                fullWidth
+                label='Address'
+                placeholder='Address'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <AccountOutline />
+                    </InputAdornment>
+                  )
+                }}
+              />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              type='email'
-              label='Email'
-              placeholder='johnDoe@example.com'
-              defaultValue='johnDoe@example.com'
-            />
+              type='number'
+              label='Phone No.'
+              placeholder='+977-9800010004'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Phone />
+                  </InputAdornment>
+                )
+              }}
+              />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+          <TextField
+                fullWidth
+                label='Height'
+                placeholder='Height'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <HeightIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+          <TextField
+                fullWidth
+                type='Number'
+                label='Weight'
+                placeholder='Weight in KG'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <MonitorWeightIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Role</InputLabel>
-              <Select label='Role' defaultValue='admin'>
-                <MenuItem value='admin'>Admin</MenuItem>
-                <MenuItem value='author'>Author</MenuItem>
-                <MenuItem value='editor'>Editor</MenuItem>
-                <MenuItem value='maintainer'>Maintainer</MenuItem>
-                <MenuItem value='subscriber'>Subscriber</MenuItem>
+              <InputLabel>Training type</InputLabel>
+              <Select label='Training type' defaultValue='active'>
+                <MenuItem value='active'>Weight Loss</MenuItem>
+                <MenuItem value='inactive'>Fat Loss</MenuItem>
+                <MenuItem value='pending'>Strength Training</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Status</InputLabel>
-              <Select label='Status' defaultValue='active'>
-                <MenuItem value='active'>Active</MenuItem>
-                <MenuItem value='inactive'>Inactive</MenuItem>
-                <MenuItem value='pending'>Pending</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Company' placeholder='ABC Pvt. Ltd.' defaultValue='ABC Pvt. Ltd.' />
+          <TextField
+                fullWidth
+                type='text'
+                label='Health'
+                placeholder='Any Health conditions?'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <LocalHospitalIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
           </Grid>
 
-          {openAlert ? (
-            <Grid item xs={12} sx={{ mb: 3 }}>
-              <Alert
-                severity='warning'
-                sx={{ '& a': { fontWeight: 400 } }}
-                action={
-                  <IconButton size='small' color='inherit' aria-label='close' onClick={() => setOpenAlert(false)}>
-                    <Close fontSize='inherit' />
-                  </IconButton>
-                }
-              >
-                <AlertTitle>Your email is not confirmed. Please check your inbox.</AlertTitle>
-                <Link href='/' onClick={e => e.preventDefault()}>
-                  Resend Confirmation
-                </Link>
-              </Alert>
-            </Grid>
-          ) : null}
+          
+          <Grid item xs={12} sm={6}>
+          <TextField
+                fullWidth
+                type='text'
+                label='Body Condition'
+                placeholder='Any physical conditions?'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <BoyIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+          </Grid>
+
+          
+          <Grid item xs={12} sm={6}>
+          <TextField
+                fullWidth
+                type='email'
+                label='Email'
+                placeholder='carterleonard@gmail.com'
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <EmailOutline />
+                    </InputAdornment>
+                  )
+                }}
+              />
+          </Grid>
 
           <Grid item xs={12}>
             <Button variant='contained' sx={{ marginRight: 3.5 }}>
