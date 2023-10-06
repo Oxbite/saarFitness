@@ -27,7 +27,12 @@ import HeightIcon from '@mui/icons-material/Height';
 import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import BoyIcon from '@mui/icons-material/Boy';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import { LocalizationProvider, AdapterDateFns } from '@mui/x-date-pickers'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+// import MuiPicker from './MuiPicker'
+// import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -57,6 +62,11 @@ const TabAccount = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const handleDateChange = (date) => {
+    setDate({ date });
+  };
+
 
   const onChange = file => {
     const reader = new FileReader()
@@ -67,7 +77,10 @@ const TabAccount = () => {
     }
   }
 
+
+
   return (
+
     <CardContent>
       <form>
         <Grid container spacing={7}>
@@ -96,32 +109,32 @@ const TabAccount = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-          <TextField
-                fullWidth
-                label='Full Name'
-                placeholder='Full Name'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AccountOutline />
-                    </InputAdornment>
-                  )
-                }}
-              />
+            <TextField
+              fullWidth
+              label='Full Name'
+              placeholder='Full Name'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <AccountOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-          <TextField
-                fullWidth
-                label='Address'
-                placeholder='Address'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AccountOutline />
-                    </InputAdornment>
-                  )
-                }}
-              />
+            <TextField
+              fullWidth
+              label='Address'
+              placeholder='Address'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <AccountOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -136,36 +149,36 @@ const TabAccount = () => {
                   </InputAdornment>
                 )
               }}
-              />
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-          <TextField
-                fullWidth
-                label='Height'
-                placeholder='Height'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <HeightIcon />
-                    </InputAdornment>
-                  )
-                }}
-              />
+            <TextField
+              fullWidth
+              label='Height'
+              placeholder='Height'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <HeightIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-          <TextField
-                fullWidth
-                type='Number'
-                label='Weight'
-                placeholder='Weight in KG'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <MonitorWeightIcon />
-                    </InputAdornment>
-                  )
-                }}
-              />
+            <TextField
+              fullWidth
+              type='Number'
+              label='Weight'
+              placeholder='Weight in KG'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <MonitorWeightIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
@@ -178,53 +191,98 @@ const TabAccount = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
-          <TextField
-                fullWidth
-                type='text'
-                label='Health'
-                placeholder='Any Health conditions?'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <LocalHospitalIcon />
-                    </InputAdornment>
-                  )
-                }}
-              />
+            <TextField
+              fullWidth
+              type='text'
+              label='Health'
+              placeholder='Any Health conditions?'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <LocalHospitalIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
           </Grid>
 
-          
+
           <Grid item xs={12} sm={6}>
-          <TextField
-                fullWidth
-                type='text'
-                label='Body Condition'
-                placeholder='Any physical conditions?'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <BoyIcon />
-                    </InputAdornment>
-                  )
-                }}
-              />
+            <TextField
+              fullWidth
+              type='text'
+              label='Body Condition'
+              placeholder='Any physical conditions?'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <BoyIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
           </Grid>
 
-          
+
           <Grid item xs={12} sm={6}>
-          <TextField
-                fullWidth
-                type='email'
-                label='Email'
-                placeholder='carterleonard@gmail.com'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <EmailOutline />
-                    </InputAdornment>
-                  )
-                }}
-              />
+            <TextField
+              fullWidth
+              type='email'
+              label='Email'
+              placeholder='carterleonard@gmail.com'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <EmailOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='Text'
+              label='City'
+              placeholder='Kathmandu'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <LocationCityIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='number'
+              label='Guardian Phone No.'
+              placeholder='+977-9800010004'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Phone />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Membership type</InputLabel>
+              <Select label='Membership type' defaultValue='Monthly'>
+                <MenuItem value='Monthly'>Monthly</MenuItem>
+                <MenuItem value='Quaterly'>Quaterly</MenuItem>
+                <MenuItem value='Anually'>Anually</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField fullWidth label="DateOfBirth" type="date" />
           </Grid>
 
           <Grid item xs={12}>
@@ -238,6 +296,7 @@ const TabAccount = () => {
         </Grid>
       </form>
     </CardContent>
+
   )
 }
 
