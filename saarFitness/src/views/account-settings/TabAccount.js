@@ -1,6 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
-
+import { forwardRef, useState } from 'react'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -28,11 +27,35 @@ import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import BoyIcon from '@mui/icons-material/Boy';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
-import { LocalizationProvider, AdapterDateFns } from '@mui/x-date-pickers'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+
+import DatePicker from 'react-datepicker'
+
 
 // import MuiPicker from './MuiPicker'
 // import AdapterDateFns from '@mui/lab/AdapterDateFns';
+
+const DemoGrid = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    paddingTop: `${theme.spacing(1)} !important`
+  }
+}))
+
+const CustomInput = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='Birth Date' autoComplete='off' />
+})
+
+const CustomMembershipInput = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='Start of Membership Date' autoComplete='off' />
+})
+
+const CustomPhysicalInput = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='Physical Condition Year' autoComplete='off' />
+})
+
+const CustomMedicalInput = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='Physical Condition Year' autoComplete='off' />
+})
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -62,10 +85,10 @@ const TabAccount = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const handleDateChange = (date) => {
-    setDate({ date });
-  };
+  const [date, setDate] = useState(null)
+  const [membershipDate, setMembershipDate] = useState(null)
+  const [physicalDate, setPhysicalDate] = useState(null)
+  const [medicalDate, setMedicalDate] = useState(null)
 
 
   const onChange = file => {
@@ -281,18 +304,105 @@ const TabAccount = () => {
               </Select>
             </FormControl>
           </Grid>
+
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label="DateOfBirth" type="date" />
+            <DatePicker
+              selected={date}
+              showYearDropdown
+              showMonthDropdown
+              placeholderText='MM-DD-YYYY'
+              customInput={<CustomInput />}
+              id='form-layouts-separator-date'
+              onChange={date => setDate(date)}
+            />
           </Grid>
 
-          <Grid item xs={12}>
-            <Button variant='contained' sx={{ marginRight: 3.5 }}>
-              Save Changes
-            </Button>
-            <Button type='reset' variant='outlined' color='secondary'>
-              Reset
-            </Button>
+          <Grid item xs={12} sm={6}>
+            <DatePicker
+              selected={membershipDate}
+              showYearDropdown
+              showMonthDropdown
+              placeholderText='MM-DD-YYYY'
+              customInput={<CustomMembershipInput />}
+              id='form-layouts-separator-date'
+              onChange={membershipDate => setMembershipDate(membershipDate)}
+            />
           </Grid>
+
+
+          <DemoGrid item xs={12} sm={10}>
+            <Typography variant='h3' sx={{ marginBottom: 2 }}>
+              Physical Condition Info
+            </Typography>
+            <Typography variant='body2'>
+              <Grid item xs={12} sm={6}>
+                <DatePicker
+                  selected={physicalDate}
+                  showYearDropdown
+                  showMonthDropdown
+                  placeholderText='MM-DD-YYYY'
+                  customInput={<CustomPhysicalInput />}
+                  id='form-layouts-separator-date'
+                  onChange={physicalDate => setPhysicalDate(physicalDate)}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  multiline
+                  minRows={3}
+                  label='Description'
+                  placeholder='Enter detailed description'
+                  sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <MessageOutline />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </Grid>
+            </Typography>
+          </DemoGrid>
+
+          <DemoGrid item xs={12} sm={10}>
+            <Typography variant='h3' sx={{ marginBottom: 2 }}>
+              Medical Condition Info
+            </Typography>
+            <Typography variant='body2'>
+              <Grid item xs={12} sm={6}>
+                <DatePicker
+                  selected={medicalDate}
+                  showYearDropdown
+                  showMonthDropdown
+                  placeholderText='MM-DD-YYYY'
+                  customInput={<CustomMedicalInput />}
+                  id='form-layouts-separator-date'
+                  onChange={medicalDate => setMedicalDate(medicalDate)}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  multiline
+                  minRows={3}
+                  label='Description'
+                  placeholder='Enter detailed Medical description or restriction'
+                  sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <MessageOutline />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </Grid>
+            </Typography>
+          </DemoGrid>
         </Grid>
       </form>
     </CardContent>
