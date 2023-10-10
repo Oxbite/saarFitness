@@ -398,7 +398,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
                     onClick={() => {
                       setConditions(prev => {
                         return [...prev].filter((p, pIndex) => {
-                          return pIndex !== indexToRemove
+                          return pIndex !== i
                         })
                       })
                     }}
