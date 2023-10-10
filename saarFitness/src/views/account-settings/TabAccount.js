@@ -57,6 +57,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 const TabAccount = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
+  const logo = '/images/logos/logoSmall.png'
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
   const [date, setDate] = useState(null)
   const [Membdate, setMembDate] = useState(null)
@@ -77,7 +78,7 @@ const TabAccount = () => {
     <CardContent>
       <form>
         <Grid container spacing={7}>
-          <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
+          <Grid item xs={12} sm={6} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <ImgStyled src={imgSrc} alt='Profile Pic' />
               <Box>
@@ -99,6 +100,14 @@ const TabAccount = () => {
                 </Typography>
               </Box>
             </Box>
+          </Grid>
+
+          <Grid item xs={12} sm={6} sx={{ marginTop: 4.8, marginBottom: 3}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <ImgStyled src={logo} alt='Profile Pic' sx={{ marginLeft: 'auto' }} />
+            <Typography variant="h6" sx={{ marginLeft: 'auto' }}>SAAR FITNESS</Typography>
+          </Box>
+
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -156,6 +165,8 @@ const TabAccount = () => {
               </RadioGroup>
             </FormControl>
             </Grid>
+
+            
 
           <Grid item xs={12} sm={6}>
             <TextField
@@ -520,7 +531,12 @@ const TabAccount = () => {
 
           
         </Grid>
+
+        <Button type="submit" variant="contained" color="primary"style={{ marginTop: '30px' }} >
+        REGISTER
+        </Button>
       </form>
+      
     </CardContent>
 
   )
