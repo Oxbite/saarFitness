@@ -124,6 +124,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               label='Full Name'
               placeholder='Full Name'
@@ -139,6 +140,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               label='Address'
               placeholder='Address'
@@ -154,6 +156,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               type='date'
               label='Date of Birth'
@@ -180,6 +183,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               type='Text'
               label='City'
@@ -196,6 +200,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               type='number'
               label='Phone No.'
@@ -212,6 +217,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               type='email'
               label='Email'
@@ -228,6 +234,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               label='Height'
               placeholder='Height'
@@ -243,6 +250,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               type='Number'
               label='Weight'
@@ -270,6 +278,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               type='number'
               label='Emergency Contact'
@@ -297,6 +306,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               fullWidth
               type='date'
               label='Date Membership start'
@@ -341,6 +351,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
               return (
                 <Grid item>
                   <TextField
+                    required
                     fullWidth
                     name='year'
                     type='number'
@@ -359,6 +370,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
                     }}
                   />
                   <TextField
+                    required
                     style={{ marginTop: '10px' }}
                     fullWidth
                     name='detail'
