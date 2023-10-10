@@ -69,11 +69,10 @@ const userdata = {
 export const UserForm = ({ customer = userdata, cond = [] }) => {
   const [openAlert, setOpenAlert] = useState(true)
   const logo = '/images/logos/logoSmall.png'
-  const [userdata, setUser] = useState(customer)
+  const [userdata, setUser] = useState({ ...customer })
   const [conditions, setConditions] = useState([...cond])
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
   const [date, setDate] = useState(null)
-  const [Membdate, setMembDate] = useState(null)
   const onChange = (e = null) => {
     setUser(prev => {
       prev[e.target.name] = e.target.value
@@ -128,6 +127,8 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
               fullWidth
               label='Full Name'
               placeholder='Full Name'
+              name='fname'
+              value={userdata.fname}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -304,22 +305,6 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              fullWidth
-              type='date'
-              label='Date Membership start'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <CalendarMonthIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-
           <Grid item xs={12}>
             <Divider sx={{ marginBottom: 0 }} />{' '}
           </Grid>
@@ -391,16 +376,15 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
                       )
                     }}
                   />
-                  <InputLabel>Training type</InputLabel>
                   <Select
                     name='type'
                     label='Type: (physical/medical)'
                     onChange={e => {
                       onConditionChange(e, i)
                     }}
-                    defaultValue='active'
+                    defaultValue={c.type.length > 0 ? c.type : 'physical'}
                   >
-                    <MenuItem value='medical'>physical</MenuItem>
+                    <MenuItem value='medical'>medical</MenuItem>
                     <MenuItem value='physical'>physical</MenuItem>
                     <MenuItem value='pending'>Strength Training</MenuItem>
                   </Select>
