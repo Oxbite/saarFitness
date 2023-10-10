@@ -201,6 +201,7 @@ const FormLayoutsSeparator = () => {
                 onChange={date => setDate(date)}
               />
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField fullWidth label='Phone No.' placeholder='+1-123-456-8790' />
             </Grid>

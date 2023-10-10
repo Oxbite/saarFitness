@@ -1,61 +1,34 @@
-// ** React Imports
-import { forwardRef, useState } from 'react'
-// ** MUI Imports
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
-import Alert from '@mui/material/Alert'
-import Select from '@mui/material/Select'
-import { styled } from '@mui/material/styles'
-import MenuItem from '@mui/material/MenuItem'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
-import InputAdornment from '@mui/material/InputAdornment'
-import AlertTitle from '@mui/material/AlertTitle'
-import IconButton from '@mui/material/IconButton'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import Button from '@mui/material/Button'
-import Phone from 'mdi-material-ui/Phone'
-import EmailOutline from 'mdi-material-ui/EmailOutline'
-import AccountOutline from 'mdi-material-ui/AccountOutline'
-import MessageOutline from 'mdi-material-ui/MessageOutline'
-import Close from 'mdi-material-ui/Close'
-import HeightIcon from '@mui/icons-material/Height';
-import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import BoyIcon from '@mui/icons-material/Boy';
-import LocationCityIcon from '@mui/icons-material/LocationCity';
-
-
-import DatePicker from 'react-datepicker'
-
-
-// import MuiPicker from './MuiPicker'
-// import AdapterDateFns from '@mui/lab/AdapterDateFns';
-
-const DemoGrid = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    paddingTop: `${theme.spacing(1)} !important`
-  }
-}))
-
-const CustomInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Birth Date' autoComplete='off' />
-})
-
-const CustomMembershipInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Start of Membership Date' autoComplete='off' />
-})
-
-const CustomPhysicalInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Physical Condition Year' autoComplete='off' />
-})
-
-const CustomMedicalInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Physical Condition Year' autoComplete='off' />
-})
+// IMPORTSSSSSS  
+  // ** React Imports
+  import { forwardRef, useState } from 'react'
+  // ** MUI Imports
+  import RadioGroup from '@mui/material/RadioGroup'
+  import Box from '@mui/material/Box'
+  import Grid from '@mui/material/Grid'
+  import Select from '@mui/material/Select'
+  import { styled } from '@mui/material/styles'
+  import MenuItem from '@mui/material/MenuItem'
+  import TextField from '@mui/material/TextField'
+  import Typography from '@mui/material/Typography'
+  import InputLabel from '@mui/material/InputLabel'
+  import InputAdornment from '@mui/material/InputAdornment'
+  import CardContent from '@mui/material/CardContent'
+  import FormLabel from '@mui/material/FormLabel'
+  import FormControl from '@mui/material/FormControl'
+  import FormControlLabel from '@mui/material/FormControlLabel'
+  import Button from '@mui/material/Button'
+  import Phone from 'mdi-material-ui/Phone'
+  import EmailOutline from 'mdi-material-ui/EmailOutline'
+  import AccountOutline from 'mdi-material-ui/AccountOutline'
+  import MessageOutline from 'mdi-material-ui/MessageOutline'
+  import HeightIcon from '@mui/icons-material/Height';
+  import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
+  import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+  import LocationCityIcon from '@mui/icons-material/LocationCity';
+  import Divider from '@mui/material/Divider'
+  import CakeIcon from '@mui/icons-material/Cake';
+  import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+  import Radio from '@mui/material/Radio'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -86,10 +59,7 @@ const TabAccount = () => {
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
   const [date, setDate] = useState(null)
-  const [membershipDate, setMembershipDate] = useState(null)
-  const [physicalDate, setPhysicalDate] = useState(null)
-  const [medicalDate, setMedicalDate] = useState(null)
-
+  const [Membdate, setMembDate] = useState(null)
 
   const onChange = file => {
     const reader = new FileReader()
@@ -145,6 +115,7 @@ const TabAccount = () => {
               }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -159,109 +130,32 @@ const TabAccount = () => {
               }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
-            <TextField
+          <TextField
               fullWidth
-              type='number'
-              label='Phone No.'
-              placeholder='+977-9800010004'
+              type= 'date'
+              label='Date of Birth'
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
-                    <Phone />
+                    <CakeIcon  />
                   </InputAdornment>
                 )
               }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label='Height'
-              placeholder='Height'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <HeightIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              type='Number'
-              label='Weight'
-              placeholder='Weight in KG'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <MonitorWeightIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Training type</InputLabel>
-              <Select label='Training type' defaultValue='active'>
-                <MenuItem value='active'>Weight Loss</MenuItem>
-                <MenuItem value='inactive'>Fat Loss</MenuItem>
-                <MenuItem value='pending'>Strength Training</MenuItem>
-              </Select>
+          <FormControl>
+              <FormLabel sx={{ fontSize: '0.875rem' }}>Gender</FormLabel>
+              <RadioGroup row defaultValue='male' aria-label='gender' name='account-settings-info-radio'>
+                <FormControlLabel value='male' label='Male' control={<Radio />} />
+                <FormControlLabel value='female' label='Female' control={<Radio />} />
+                <FormControlLabel value='other' label='Other' control={<Radio />} />
+              </RadioGroup>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              type='text'
-              label='Health'
-              placeholder='Any Health conditions?'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <LocalHospitalIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              type='text'
-              label='Body Condition'
-              placeholder='Any physical conditions?'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <BoyIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              type='email'
-              label='Email'
-              placeholder='carterleonard@gmail.com'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <EmailOutline />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
+            </Grid>
 
           <Grid item xs={12} sm={6}>
             <TextField
@@ -283,7 +177,7 @@ const TabAccount = () => {
             <TextField
               fullWidth
               type='number'
-              label='Guardian Phone No.'
+              label='Phone No.'
               placeholder='+977-9800010004'
               InputProps={{
                 startAdornment: (
@@ -294,115 +188,337 @@ const TabAccount = () => {
               }}
             />
           </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='email'
+              label='Email'
+              placeholder='example: saarFitness@gmail.com'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <EmailOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Height'
+              placeholder='Height'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <HeightIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type='Number'
+              label='Weight'
+              placeholder='Weight in KG'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <MonitorWeightIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Membership type</InputLabel>
-              <Select label='Membership type' defaultValue='Monthly'>
-                <MenuItem value='Monthly'>Monthly</MenuItem>
-                <MenuItem value='Quaterly'>Quaterly</MenuItem>
-                <MenuItem value='Anually'>Anually</MenuItem>
+              <InputLabel>Training type</InputLabel>
+              <Select label='Training type' defaultValue='active'>
+                <MenuItem value='active'>Weight Loss</MenuItem>
+                <MenuItem value='inactive'>Fat Loss</MenuItem>
+                <MenuItem value='pending'>Strength Training</MenuItem>
               </Select>
             </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <DatePicker
-              selected={date}
-              showYearDropdown
-              showMonthDropdown
-              placeholderText='MM-DD-YYYY'
-              customInput={<CustomInput />}
-              id='form-layouts-separator-date'
-              onChange={date => setDate(date)}
+            <TextField
+              fullWidth
+              type='number'
+              label='Emergency Contact'
+              placeholder='+977-9800010002'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Phone />
+                  </InputAdornment>
+                )
+              }}
             />
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <DatePicker
-              selected={membershipDate}
-              showYearDropdown
-              showMonthDropdown
-              placeholderText='MM-DD-YYYY'
-              customInput={<CustomMembershipInput />}
-              id='form-layouts-separator-date'
-              onChange={membershipDate => setMembershipDate(membershipDate)}
+            <FormControl fullWidth>
+              <InputLabel>Membership type</InputLabel>
+              <Select label='Membership type' defaultValue='Monthly'>
+                <MenuItem value='Monthly'>Monthly (1 month)</MenuItem>
+                <MenuItem value='Quaterly'>Quaterly (3 months)</MenuItem>
+                <MenuItem value='Anually'>Anually (1 year)</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+          <TextField
+              fullWidth
+              type= 'date'
+              label='Date Membership start'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <CalendarMonthIcon  />
+                  </InputAdornment>
+                )
+              }}
             />
           </Grid>
 
+          <Grid item xs={12}><Divider sx={{ marginBottom: 0 }} /> </Grid>
 
-          <DemoGrid item xs={12} sm={10}>
-            <Typography variant='h3' sx={{ marginBottom: 2 }}>
-              Physical Condition Info
+          <Grid item >
+            <Typography variant='h4' sx={{ marginBottom: 2 }}>
+                Physical Conditions           
             </Typography>
             <Typography variant='body2'>
-              <Grid item xs={12} sm={6}>
-                <DatePicker
-                  selected={physicalDate}
-                  showYearDropdown
-                  showMonthDropdown
-                  placeholderText='MM-DD-YYYY'
-                  customInput={<CustomPhysicalInput />}
-                  id='form-layouts-separator-date'
-                  onChange={physicalDate => setPhysicalDate(physicalDate)}
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={3}
-                  label='Description'
-                  placeholder='Enter detailed description'
-                  sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <MessageOutline />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Grid>
+              To ensure safety and successful program, it is necessart to know any physical contions that may reqyuire a change to the program.
+              Please note any injuries or surgeries that should be considered for your training program.
             </Typography>
-          </DemoGrid>
+          </Grid>
 
-          <DemoGrid item xs={12} sm={10}>
-            <Typography variant='h3' sx={{ marginBottom: 2 }}>
-              Medical Condition Info
+          <Grid item >
+          <TextField
+            fullWidth
+            type='number'
+            label='Year'
+            placeholder='Year of injury'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <LocalHospitalIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+
+          <TextField style={{ marginTop: '10px' }}
+              fullWidth
+              multiline
+              minRows={3}
+              label='Details'
+              placeholder='Example: Small crack on my left shoulder by falling from bicycle'
+              sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <MessageOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item >
+          <TextField
+            fullWidth
+            type='number'
+            label='Year'
+            placeholder='Year of injury'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <LocalHospitalIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+
+          <TextField style={{ marginTop: '10px' }}
+              fullWidth
+              multiline
+              minRows={3}
+              label='Details'
+              placeholder='Example: Small crack on my left shoulder by falling from bicycle'
+              sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <MessageOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item >
+          <TextField
+            fullWidth
+            type='number'
+            label='Year'
+            placeholder='Year of injury'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <LocalHospitalIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+
+          <TextField style={{ marginTop: '10px' }}
+              fullWidth
+              multiline
+              minRows={3}
+              label='Details'
+              placeholder='Example: Small crack on my left shoulder by falling from bicycle'
+              sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <MessageOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12}><Divider sx={{ marginBottom: 0 }} /> </Grid>
+
+          <Grid item >
+            <Typography variant='h4' sx={{ marginBottom: 2 }}>
+                Medical Conditions           
             </Typography>
             <Typography variant='body2'>
-              <Grid item xs={12} sm={6}>
-                <DatePicker
-                  selected={medicalDate}
-                  showYearDropdown
-                  showMonthDropdown
-                  placeholderText='MM-DD-YYYY'
-                  customInput={<CustomMedicalInput />}
-                  id='form-layouts-separator-date'
-                  onChange={medicalDate => setMedicalDate(medicalDate)}
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={3}
-                  label='Description'
-                  placeholder='Enter detailed Medical description or restriction'
-                  sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <MessageOutline />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Grid>
+              Please note any medical conditions that could prevent certain activities or require adjustments to the training program
+              (i.e lifting restrictions, mobility limitations, etc.). Such restrictions are provided by a physician.
             </Typography>
-          </DemoGrid>
+          </Grid>
+
+          <Grid item >
+          <TextField
+            fullWidth
+            type='text'
+            label='Condition'
+            placeholder='Medical Condition'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <LocalHospitalIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+
+          <TextField style={{ marginTop: '10px' }}
+              fullWidth
+              multiline
+              minRows={3}
+              label='Restrictions'
+              placeholder='Example: Lifting restrictions'
+              sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <MessageOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item >
+          <TextField
+            fullWidth
+            type='text'
+            label='Condition'
+            placeholder='Medical Condition'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <LocalHospitalIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+
+          <TextField style={{ marginTop: '10px' }}
+              fullWidth
+              multiline
+              minRows={3}
+              label='Restrictions'
+              placeholder='Example: Lifting restrictions'
+              sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <MessageOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item >
+          <TextField
+            fullWidth
+            type='text'
+            label='Condition'
+            placeholder='Medical Condition'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <LocalHospitalIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+
+          <TextField style={{ marginTop: '10px' }}
+              fullWidth
+              multiline
+              minRows={3}
+              label='Restrictions'
+              placeholder='Example: Lifting restrictions'
+              sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <MessageOutline />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12}><Divider sx={{ marginBottom: 0 }} /> </Grid>
+
+          <Grid item >
+            <Typography variant='body2'>
+            NOTE: Saarfitness will not be responsible for any injuries or incidents that may occur during your workout sessions. 
+            Please exercise caution, follow the guidance of our trainers,
+            and consult a physician before starting any new fitness program if you have any underlying health concerns.
+            Your safety is important to us, and we encourage you to inform our staff of any medical conditions or limitations
+            that may affect your ability to participate in physical activities at Saarfitness. By filling out this form, you acknowledge and agree to these terms and conditions.     
+            </Typography>
+          </Grid>
+
+
+          
         </Grid>
       </form>
     </CardContent>
