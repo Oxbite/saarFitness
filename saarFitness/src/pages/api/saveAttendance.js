@@ -6,12 +6,14 @@ export default async function handler(req, res) {
   const data = req.body
   try {
     console.log(data)
-    const insertIds = await db('customer').insert(data.customer)
-    data.conditions.map(e => {
-      e.customer = insertIds[0]
-    })
-    if (data.conditions.length > 0) {
-      await db('conditions').insert(data.conditions)
+    let insertIds
+    if (!data.attendance.id) {
+      insertIds = await db('attendance').insert(data.attendance)
+    } else {
+      await db('attendance').where('id', data.attendance.id).update({
+        arrival: data.attendance.arrival,
+        departure: data.attendance.departure
+      })
     }
     res.json({ data: insertIds })
   } catch (e) {

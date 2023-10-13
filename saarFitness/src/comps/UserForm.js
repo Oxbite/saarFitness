@@ -26,6 +26,8 @@ import Divider from '@mui/material/Divider'
 import CakeIcon from '@mui/icons-material/Cake'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import Radio from '@mui/material/Radio'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -54,25 +56,35 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 const userdata = {
   fname: '',
   address: '',
+  joined: '',
   dob: '',
-  gender: '',
-  city: '',
+  gender: 'male',
   phone: '',
   email: '',
   height: '',
   weight: '',
   training_type: '',
-  emergency_contact: '',
-  period: ''
+  emergency_phone: ''
 }
 
-export const UserForm = ({ customer = userdata, cond = [] }) => {
+export const UserForm = ({
+  customer = userdata,
+  cond = [],
+  postto = '/api/addCustomer',
+  redirect = false,
+  redirectto = ''
+}) => {
   const [openAlert, setOpenAlert] = useState(true)
   const logo = '/images/logos/logoSmall.png'
   const [userdata, setUser] = useState({ ...customer })
   const [conditions, setConditions] = useState([...cond])
-  const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
+  const [imgSrc, setImgSrc] = useState(
+    userdata.image?.length > 0 ? '/images/avatars/' + userdata.image : '/images/avatars/1.png'
+  )
+
   const [date, setDate] = useState(null)
+  const [imagefile, setImageFile] = useState(null)
+  console.log(userdata)
   const onChange = (e = null) => {
     setUser(prev => {
       prev[e.target.name] = e.target.value
@@ -84,9 +96,47 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
     nprop[idx][e.target.name] = e.target.value
     setConditions(nprop)
   }
+  const [err, setErr] = useState('')
+  const router = useRouter()
+  const onImageChange = file => {
+    const reader = new FileReader()
+
+    const { files } = file.target
+    setImageFile(file.target.files)
+    if (files && files.length !== 0) {
+      reader.onload = () => setImgSrc(reader.result)
+      reader.readAsDataURL(files[0])
+    }
+  }
   return (
     <CardContent>
-      <form onSubmit={() => {}}>
+      <form
+        onSubmit={async e => {
+          e.preventDefault()
+          const data = new FormData()
+          if (!imagefile && !userdata.id) {
+            setErr('Add and Image please')
+            return
+          }
+          if (imagefile) {
+            for (const file of imagefile) {
+              data.append('file', file)
+            }
+            const links = await axios.post('/api/upload_avatar', data)
+            userdata.image = links.data.links[0]
+          }
+          const res = await axios.post(postto, {
+            customer: userdata,
+            conditions: conditions
+          })
+          console.log(redirect)
+          if (redirect) {
+            console.log('here')
+            console.log(res.data)
+            router.push('/account-settings/' + res.data.data[0])
+          }
+        }}
+      >
         <Grid container spacing={7}>
           <Grid item xs={12} sm={6} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -96,13 +146,20 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
                   Upload New Photo
                   <input
                     hidden
+                    name='images'
                     type='file'
-                    onChange={onChange}
+                    onChange={onImageChange}
                     accept='image/png, image/jpeg'
                     id='account-settings-upload-image'
                   />
                 </ButtonStyled>
-                <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('/images/avatars/1.png')}>
+                <ResetButtonStyled
+                  color='error'
+                  variant='outlined'
+                  onClick={() =>
+                    setImgSrc(userdata.image ? '/images/avatars/' + userdata.image : '/images/avatars/1.png')
+                  }
+                >
                   Reset
                 </ResetButtonStyled>
                 <Typography variant='body2' sx={{ marginTop: 5 }}>
@@ -125,6 +182,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
             <TextField
               required
               fullWidth
+              onChange={onChange}
               label='Full Name'
               placeholder='Full Name'
               name='fname'
@@ -142,9 +200,12 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
           <Grid item xs={12} sm={6}>
             <TextField
               required
+              onChange={onChange}
               fullWidth
               label='Address'
               placeholder='Address'
+              name='address'
+              value={userdata.address}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -158,9 +219,12 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
           <Grid item xs={12} sm={6}>
             <TextField
               required
+              onChange={onChange}
               fullWidth
+              value={userdata.dob}
               type='date'
               label='Date of Birth'
+              name='dob'
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -174,7 +238,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
           <Grid item xs={12} sm={6}>
             <FormControl>
               <FormLabel sx={{ fontSize: '0.875rem' }}>Gender</FormLabel>
-              <RadioGroup row defaultValue='male' aria-label='gender' name='account-settings-info-radio'>
+              <RadioGroup row defaultValue='male' aria-label='gender' name='gender' onChange={onChange}>
                 <FormControlLabel value='male' label='Male' control={<Radio />} />
                 <FormControlLabel value='female' label='Female' control={<Radio />} />
                 <FormControlLabel value='other' label='Other' control={<Radio />} />
@@ -186,23 +250,9 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
             <TextField
               required
               fullWidth
-              type='Text'
-              label='City'
-              placeholder='Kathmandu'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <LocationCityIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              fullWidth
+              value={userdata.phone}
+              onChange={onChange}
+              name='phone'
               type='number'
               label='Phone No.'
               placeholder='+977-9800010004'
@@ -221,6 +271,9 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
               required
               fullWidth
               type='email'
+              onChange={onChange}
+              name='email'
+              value={userdata.email}
               label='Email'
               placeholder='example: saarFitness@gmail.com'
               InputProps={{
@@ -236,8 +289,11 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
           <Grid item xs={12} sm={6}>
             <TextField
               required
+              onChange={onChange}
               fullWidth
+              name='height'
               label='Height'
+              value={userdata.height}
               placeholder='Height'
               InputProps={{
                 startAdornment: (
@@ -253,8 +309,11 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
             <TextField
               required
               fullWidth
+              onChange={onChange}
               type='Number'
+              name='weight'
               label='Weight'
+              value={userdata.weight}
               placeholder='Weight in KG'
               InputProps={{
                 startAdornment: (
@@ -267,23 +326,14 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Training type</InputLabel>
-              <Select label='Training type' defaultValue='active'>
-                <MenuItem value='active'>Weight Loss</MenuItem>
-                <MenuItem value='inactive'>Fat Loss</MenuItem>
-                <MenuItem value='pending'>Strength Training</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
             <TextField
               required
               fullWidth
-              type='number'
-              label='Emergency Contact'
-              placeholder='+977-9800010002'
+              label='Training type'
+              onChange={onChange}
+              name='training_type'
+              value={userdata.training_type}
+              placeholder='eg, weightloss, strength gain'
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -295,6 +345,26 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              fullWidth
+              type='number'
+              name='emergency_phone'
+              onChange={onChange}
+              value={userdata.emergency_phone}
+              label='Emergency Contact'
+              placeholder='eg. +977-9800010002'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Phone />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+
+          {/* <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Membership type</InputLabel>
               <Select label='Membership type' defaultValue='Monthly'>
@@ -303,7 +373,7 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
                 <MenuItem value='Anually'>Anually (1 year)</MenuItem>
               </Select>
             </FormControl>
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12}>
             <Divider sx={{ marginBottom: 0 }} />{' '}
@@ -392,11 +462,15 @@ export const UserForm = ({ customer = userdata, cond = [] }) => {
                     color='error'
                     variant='outlined'
                     onClick={() => {
-                      setConditions(prev => {
-                        return [...prev].filter((p, pIndex) => {
-                          return pIndex !== i
+                      try {
+                        setConditions(prev => {
+                          return [...prev].filter((p, pIndex) => {
+                            return pIndex !== i
+                          })
                         })
-                      })
+                      } catch (e) {
+                        console.log(e)
+                      }
                     }}
                   >
                     Remove Condition

@@ -1,4 +1,3 @@
-import UserTable from 'src/comps/UserTable'
 import { useState } from 'react'
 import { db } from 'src/lib/db'
 import Box from '@mui/material/Box'
@@ -36,13 +35,12 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-export default function ({ customers, total }) {
+const AccountSettings = ({ customer = null, conditions = null, subscriptions }) => {
   // ** State
-  if (!customers) {
+  const [value, setValue] = useState('account')
+  if (!customer) {
     return <Error404 />
   }
-  console.log(customers)
-  const [value, setValue] = useState('account')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -61,7 +59,7 @@ export default function ({ customers, total }) {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>All Customers</TabName>
+                <TabName>Account</TabName>
               </Box>
             }
           />
@@ -70,7 +68,7 @@ export default function ({ customers, total }) {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
-                <TabName>Expired</TabName>
+                <TabName>Security</TabName>
               </Box>
             }
           />
@@ -79,48 +77,40 @@ export default function ({ customers, total }) {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InformationOutline />
-                <TabName>Unpaid</TabName>
+                <TabName>Info</TabName>
               </Box>
             }
           />
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
-          <UserTable customers={customers} total={customers.length} />
+          <TabAccount customer={customer} conditions={conditions} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='security'>
-          <UserTable
-            customers={customers.filter(c => {
-              const endDate = new Date(c.end_date)
-
-              return endDate < new Date()
-            })}
-          />
+          <TabSecurity customer={customer} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='info'>
-          <UserTable
-            customers={customers.filter(c => {
-              return c.paid != 1
-            })}
-            total={customers.length}
-          />
+          <TabInfo subscriptions={subscriptions} />
         </TabPanel>
       </TabContext>
     </Card>
   )
 }
 
-export async function getServerSideProps() {
-  const today = new Date().toISOString().split('T')[0] // Convert today's date to ISO format
+export default AccountSettings
 
-  const customers = await db('customer as c')
-    .select('*')
-    .leftJoin('subscription as s', function () {
-      this.on('c.id', '=', 's.customer')
-    })
-    .where('s.start_date', '<=', today)
-    .whereNotNull('s.id')
-    .whereRaw('s.end_date = (SELECT MAX(end_date) FROM subscription WHERE customer = c.id)')
-
-  return { props: { customers } }
+export async function getServerSideProps({ params }) {
+  const { id } = params
+  const customer = await db('customer').select('*').where('id', id)
+  if (customer.length < 0) {
+  }
+  const subscriptions = await db('subscription').select('*').where('customer', id)
+  const conditions = await db('conditions').select('*').where('customer', id)
+  return {
+    props: {
+      customer: customer[0] ?? null,
+      conditions,
+      subscriptions
+    }
+  }
 }

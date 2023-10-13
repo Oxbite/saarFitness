@@ -7,70 +7,77 @@ import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
+import AccountArrowRight from 'mdi-material-ui/AccountArrowRight'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
 const navigation = () => {
   return [
     {
-      title: 'Dashboard',
+      title: 'Staff',
       icon: HomeOutline,
-      path: '/'
+      path: '/staff'
     },
     {
-      title: 'Account Settings',
+      title: 'Customers',
       icon: AccountCogOutline,
       path: '/account-settings'
     },
     {
       sectionTitle: 'Pages'
     },
+    // {
+    //   title: 'Login',
+    //   icon: Login,
+    //   path: '/pages/login',
+    //   openInNewTab: false
+    // },
     {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
-    },
-    {
-      title: 'Register',
+      title: 'Add Customer',
       icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
+      path: '/addcustomer',
+      openInNewTab: false
     },
     {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
+      title: 'Add Staff',
+      icon: AccountPlusOutline,
+      path: '/addstaff',
+      openInNewTab: false
     },
     {
-      sectionTitle: 'User Interface'
-    },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
-    },
-    {
-      title: 'Icons',
-      path: '/icons',
-      icon: GoogleCirclesExtended
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/cards'
-    },
-    {
-      title: 'Tables',
-      icon: Table,
-      path: '/tables'
-    },
-    {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/form-layouts'
+      title: 'Attendances',
+      icon: AccountArrowRight,
+      path: '/attendance',
+      openInNewTab: false
     }
+    // {
+    //   sectionTitle: 'User Interface'
+    // },
+    // {
+    //   title: 'Typography',
+    //   icon: FormatLetterCase,
+    //   path: '/typography'
+    // },
+    // {
+    //   title: 'Icons',
+    //   path: '/icons',
+    //   icon: GoogleCirclesExtended
+    // },
+    // {
+    //   title: 'Cards',
+    //   icon: CreditCardOutline,
+    //   path: '/cards'
+    // },
+    // {
+    //   title: 'Tables',
+    //   icon: Table,
+    //   path: '/tables'
+    // },
+    // {
+    //   icon: CubeOutline,
+    //   title: 'Form Layouts',
+    //   path: '/form-layouts'
+    // }
   ]
 }
 

@@ -69,7 +69,7 @@ const userdata = {
 
 const conditions = []
 
-const TabAccount = () => {
+const TabAccount = ({ customer, conditions }) => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
   const logo = '/images/logos/logoSmall.png'
@@ -86,7 +86,7 @@ const TabAccount = () => {
     }
   }
 
-  return <UserForm />
+  return <UserForm customer={customer} postto='/api/editCustomer' redirect={false} cond={conditions} />
 }
 
 export default TabAccount
