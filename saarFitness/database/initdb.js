@@ -28,6 +28,8 @@ db.schema
     table.string('fname').notNullable()
     table.date('dob').notNullable()
     table.date('joined').notNullable()
+    table.string('shift').notNullable()
+    table.string('type').notNullable()
     table.string('cv')
     table.string('image')
     table.string('citizenship')
@@ -82,7 +84,7 @@ db.schema
     table.increments('id').primary()
     table.integer('customer').notNullable()
     table.string('type').notNullable()
-    table.date('date').notNullable()
+    table.integer('year').notNullable()
     table.text('detail')
   })
   .then(() => {
