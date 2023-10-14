@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -17,6 +18,7 @@ import { styled } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import axios from 'axios'
 import { validateTime } from '@mui/x-date-pickers/internals'
+import { useEffect } from 'react'
 
 const ButtonStyled = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -37,20 +39,31 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 
 export function AttendanceDate({ cust, att }) {
   const [attendances, setAttendances] = useState([...att])
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0])
 
+  // useEffect(() => {
+  //   const f = async () => {}
+  //   f()
+  // }, [date])
   return (
     <CardContent>
+      <Typography variant='h3' sx={{ marginBottom: 2 }}>
+        Attendance By Date
+      </Typography>
       <Grid item xs={12} sm={6}>
         <TextField
           required
           onChange={async e => {
+            const ndate = new Date(e.target.value).toISOString().split('T')[0]
             const res = await axios.get('/api/getAttendance', {
-              params: { date: new Date(e.target.value).toISOString().split('T')[0] }
+              params: { date: ndate }
             })
-            setAttendances(res.data.attendances)
+            console.log(res)
+            setDate(ndate)
+            setAttendances(res.data)
           }}
           fullWidth
-          value={new Date().toISOString().split('T')[0]}
+          value={date}
           type='date'
           label='Date'
           name='dob'
@@ -76,9 +89,17 @@ export function AttendanceDate({ cust, att }) {
                 return (
                   <TableRow key={e.id}>
                     <TableCell>{e.fname}</TableCell>
-                    <TableCell>{dateToString(new Date(e.arrived))}</TableCell>
-                    <TableCell>{dateToString(new Date(e.departed))}</TableCell>
-                    <TableCell align='right'>{<Link href={'/attendance/' + e.id}>edit Attendance</Link>}</TableCell>
+                    <TableCell>{dateToString(new Date(e.arrival))}</TableCell>
+                    <TableCell>{e.departure ? dateToString(new Date(e.arrival)) : 'not set'}</TableCell>
+                    <TableCell align='right'>
+                      {
+                        <Link href={'/attendance/' + e.id}>
+                          <Typography color={'white'} style={{ cursor: 'pointer' }}>
+                            edit Attendance
+                          </Typography>
+                        </Link>
+                      }
+                    </TableCell>
                   </TableRow>
                 )
               })}
@@ -94,10 +115,6 @@ export const AttendanceTable = ({ customers, att = [] }) => {
   console.log(att)
   const setAttendance = async (c_id, idx = -1) => {
     if (idx < 0) {
-      // call to api to create new attendance.
-
-      // set the attendance id
-      // change attendance
       const at = {
         arrival: new Date().toISOString(),
         customer: c_id
@@ -115,72 +132,88 @@ export const AttendanceTable = ({ customers, att = [] }) => {
     }
   }
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-        <TableHead>
-          <TableRow>
-            <TableCell>Customer name</TableCell>
-            <TableCell align='right'>Arrived/departed</TableCell>
-            <TableCell align='right'>Edit</TableCell>
-          </TableRow>
-        </TableHead>
+    <CardContent>
+      <Typography variant='h3' sx={{ marginBottom: 2 }}>
+        Attendance Today
+      </Typography>
+      <Link href={'/attendance/bydate'}>
+        <ButtonStyled>View By date</ButtonStyled>
+      </Link>
+      <TableContainer component={Paper} sx={{ marginTop: 3 }}>
+        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              <TableCell>Customer name</TableCell>
+              <TableCell align='right'>Arrived/departed</TableCell>
+              <TableCell align='right'>Edit</TableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {customers.length > 0 &&
-            customers.map(e => {
-              let attendance = null
-              let index = -1
-              for (let i = 0; i < attendances.length; i++) {
-                if (attendances[i].customer == e.customer) {
-                  attendance = attendances[i]
-                  index = i
+          <TableBody>
+            {customers.length > 0 &&
+              customers.map(e => {
+                let attendance = null
+                let index = -1
+                for (let i = 0; i < attendances.length; i++) {
+                  if (attendances[i].customer == e.customer) {
+                    attendance = attendances[i]
+                    index = i
+                  }
                 }
-              }
-              console.log(e)
-              return (
-                <TableRow key={e.id}>
-                  <TableCell>{e.fname}</TableCell>
-                  <TableCell>
-                    {!attendance ? (
-                      <>
-                        <ButtonStyled
-                          component='label'
-                          variant='contained'
-                          onClick={() => {
-                            setAttendance(e.customer, index)
-                          }}
-                        >
-                          Set Arrived
-                        </ButtonStyled>
-                      </>
-                    ) : (
-                      <>
-                        <ButtonStyled
-                          component='label'
-                          variant='contained'
-                          onClick={() => {
-                            setAttendance(e.customer, index)
-                          }}
-                          disabled={attendance && attendance.departure != undefined ? true : false}
-                        >
-                          Set Departed
-                        </ButtonStyled>
-                      </>
-                    )}
-                  </TableCell>
-                  <TableCell align='right'>
-                    {!attendance ? (
-                      <Link href={'/attendance/byuser/' + e.customer}>custom Attendance</Link>
-                    ) : (
-                      <Link href={'/attendance/' + attendance.id}>edit Attendance</Link>
-                    )}
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                console.log(e)
+                return (
+                  <TableRow key={e.id}>
+                    <TableCell>{e.fname}</TableCell>
+                    <TableCell>
+                      {!attendance ? (
+                        <>
+                          <ButtonStyled
+                            component='label'
+                            variant='contained'
+                            onClick={() => {
+                              setAttendance(e.customer, index)
+                            }}
+                          >
+                            Set Arrived
+                          </ButtonStyled>
+                        </>
+                      ) : (
+                        <>
+                          <ButtonStyled
+                            component='label'
+                            variant='contained'
+                            onClick={() => {
+                              setAttendance(e.customer, index)
+                            }}
+                            disabled={attendance && attendance.departure != undefined ? true : false}
+                          >
+                            Set Departed
+                          </ButtonStyled>
+                        </>
+                      )}
+                    </TableCell>
+                    <TableCell align='right'>
+                      {!attendance ? (
+                        <Link href={'/attendance/byuser/' + e.customer}>
+                          <Typography color={'white'} style={{ cursor: 'pointer' }}>
+                            custom Attendance
+                          </Typography>
+                        </Link>
+                      ) : (
+                        <Link href={'/attendance/' + attendance.id}>
+                          <Typography color={'white'} style={{ cursor: 'pointer' }}>
+                            custom Attendance
+                          </Typography>
+                        </Link>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </CardContent>
   )
 }
 
@@ -207,7 +240,7 @@ export function AttendanceForm({
   attendance = {
     ...attendance,
     arrival: dateToString(new Date(attendance.arrival)),
-    departure: dateToString(new Date(attendance.departure ?? ''))
+    departure: attendance.departure ? dateToString(new Date(attendance.departure)) : dateToString(new Date())
   }
   const [today, setToday] = useState(attendance)
   const onChange = e => {
@@ -259,7 +292,7 @@ export function AttendanceForm({
             placeholder='departure time'
             name='departure'
             sx={{ marginTop: '10px' }}
-            value={today.departure.length == 0 ? dateToString(new Date()) : dateToString(new Date(today.departure))}
+            value={!today.departure && today.departure.length == 0 ? new Date() : today.departure}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
