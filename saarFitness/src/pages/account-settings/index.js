@@ -17,6 +17,7 @@ import TabSecurity from 'src/views/account-settings/TabSecurity'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useRouter } from 'next/router'
 import Error404 from '../404'
+import { AccountBoxSharp } from '@material-ui/icons'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -36,7 +37,7 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-export default function ({ customers, total }) {
+export default function ({ customers, total, all }) {
   // ** State
   if (!customers) {
     return <Error404 />
@@ -66,6 +67,15 @@ export default function ({ customers, total }) {
             }
           />
           <Tab
+            value='active'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <AccountBoxSharp />
+                <TabName>Currently Active</TabName>
+              </Box>
+            }
+          />
+          <Tab
             value='security'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -86,8 +96,12 @@ export default function ({ customers, total }) {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
+          <UserTable customers={all} total={all.length} />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='active'>
           <UserTable customers={customers} total={customers.length} />
         </TabPanel>
+
         <TabPanel sx={{ p: 0 }} value='security'>
           <UserTable
             customers={customers.filter(c => {
@@ -121,6 +135,7 @@ export async function getServerSideProps() {
     .where('s.start_date', '<=', today)
     .whereNotNull('s.id')
     .whereRaw('s.end_date = (SELECT MAX(end_date) FROM subscription WHERE customer = c.id)')
+  const all = await db('customer').select('*')
 
-  return { props: { customers } }
+  return { props: { customers, all } }
 }

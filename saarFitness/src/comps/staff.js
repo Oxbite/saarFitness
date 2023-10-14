@@ -443,14 +443,14 @@ export function StaffTable({ staff }) {
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
-                      <Link href={'/editStaff' + row.id}>
+                      <Link href={'/staff/' + row.id}>
                         <Box sx={{ cursor: 'pointer', textDecoration: 'underline' }}>{row.fname}</Box>
                       </Link>
                     </Typography>
                   </Box>
                 </TableCell>
-                <TableCell>{Math.floor((new Date() - new Date(row.dob)) / (365.25 * 24 * 60 * 60 * 1000))}</TableCell>
                 <TableCell>{row.joined}</TableCell>
+                <TableCell>{Math.floor((new Date() - new Date(row.dob)) / (365.25 * 24 * 60 * 60 * 1000))}</TableCell>
                 <TableCell>{row.address}</TableCell>
                 <TableCell>{row.type}</TableCell>
               </TableRow>
