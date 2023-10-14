@@ -35,6 +35,60 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
+export function AttendanceDate({ cust, att }) {
+  const [attendances, setAttendances] = useState([...att])
+
+  return (
+    <CardContent>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          onChange={async e => {
+            const res = await axios.get('/api/getAttendance', {
+              params: { date: new Date(e.target.value).toISOString().split('T')[0] }
+            })
+            setAttendances(res.data.attendances)
+          }}
+          fullWidth
+          value={new Date().toISOString().split('T')[0]}
+          type='date'
+          label='Date'
+          name='dob'
+          InputProps={{
+            startAdornment: <InputAdornment position='start'></InputAdornment>
+          }}
+        />
+      </Grid>
+      <TableContainer component={Paper} sx={{ marginTop: '5px' }}>
+        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              <TableCell>Customer name</TableCell>
+              <TableCell align='right'>Arrived</TableCell>
+              <TableCell align='right'>Departed</TableCell>
+              <TableCell align='right'>Edit</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {attendances.length > 0 &&
+              attendances.map(e => {
+                return (
+                  <TableRow key={e.id}>
+                    <TableCell>{e.fname}</TableCell>
+                    <TableCell>{dateToString(new Date(e.arrived))}</TableCell>
+                    <TableCell>{dateToString(new Date(e.departed))}</TableCell>
+                    <TableCell align='right'>{<Link href={'/attendance/' + e.id}>edit Attendance</Link>}</TableCell>
+                  </TableRow>
+                )
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </CardContent>
+  )
+}
+
 export const AttendanceTable = ({ customers, att = [] }) => {
   const [attendances, setAt] = useState(att)
   console.log(att)

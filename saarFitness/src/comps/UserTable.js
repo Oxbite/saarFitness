@@ -52,14 +52,12 @@ export function UserTableAll({ customers = [], total }) {
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Age</TableCell>
-              <TableCell>Renewal Date</TableCell>
-              <TableCell> Period</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>Address</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map(row => (
-              <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+              <TableRow hover key={row.fname} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
@@ -70,11 +68,11 @@ export function UserTableAll({ customers = [], total }) {
                         </Box>
                       </Link>
                     </Typography>
-                    <Typography variant='caption'>{row.designation}</Typography>
                   </Box>
                 </TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{Math.floor((new Date() - new Date(row.dob)) / (365.25 * 24 * 60 * 60 * 1000))}</TableCell>
+                <TableCell>{row.address}</TableCell>
               </TableRow>
             ))}
           </TableBody>

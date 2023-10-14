@@ -64,20 +64,20 @@ const AccountSettings = ({ customer = null, conditions = null, subscriptions }) 
             }
           />
           <Tab
-            value='security'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <LockOpenOutline />
-                <TabName>Security</TabName>
-              </Box>
-            }
-          />
-          <Tab
             value='info'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InformationOutline />
-                <TabName>Info</TabName>
+                <TabName>Subscriptions</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value='security'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <LockOpenOutline />
+                <TabName>Add Subscription</TabName>
               </Box>
             }
           />

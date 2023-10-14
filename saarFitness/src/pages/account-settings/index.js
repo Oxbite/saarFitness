@@ -1,4 +1,4 @@
-import UserTable from 'src/comps/UserTable'
+import UserTable, { UserTableAll } from 'src/comps/UserTable'
 import { useState } from 'react'
 import { db } from 'src/lib/db'
 import Box from '@mui/material/Box'
@@ -96,7 +96,7 @@ export default function ({ customers, total, all }) {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
-          <UserTable customers={all} total={all.length} />
+          <UserTableAll customers={all} total={all.length} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='active'>
           <UserTable customers={customers} total={customers.length} />
