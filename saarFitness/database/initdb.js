@@ -31,6 +31,7 @@ db.schema
     table.string('shift').notNullable()
     table.string('type').notNullable()
     table.string('cv')
+    table.string('address').notNullable()
     table.string('image')
     table.string('citizenship')
     table.float('salary')
