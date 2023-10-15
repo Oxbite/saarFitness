@@ -16,6 +16,7 @@ import TabSecurity from 'src/views/account-settings/TabSecurity'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useRouter } from 'next/router'
 import Error404 from '../404'
+import { AttendanceListUser } from 'src/comps/Attendance'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -35,7 +36,7 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const AccountSettings = ({ customer = null, conditions = null, subscriptions }) => {
+const AccountSettings = ({ attendances, customer = null, conditions = null, subscriptions }) => {
   // ** State
   const [value, setValue] = useState('account')
   if (!customer) {
@@ -81,6 +82,15 @@ const AccountSettings = ({ customer = null, conditions = null, subscriptions }) 
               </Box>
             }
           />
+          <Tab
+            value='attendance'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <LockOpenOutline />
+                <TabName>Attendance</TabName>
+              </Box>
+            }
+          />
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
@@ -91,6 +101,9 @@ const AccountSettings = ({ customer = null, conditions = null, subscriptions }) 
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='info'>
           <TabInfo subscriptions={subscriptions} />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='attendance'>
+          <AttendanceListUser attendances={attendances} user={customer} />
         </TabPanel>
       </TabContext>
     </Card>
@@ -106,11 +119,13 @@ export async function getServerSideProps({ params }) {
   }
   const subscriptions = await db('subscription').select('*').where('customer', id)
   const conditions = await db('conditions').select('*').where('customer', id)
+  const attendances = await db('attendance').select('*').where('customer', id).orderBy('arrival', 'desc')
   return {
     props: {
       customer: customer[0] ?? null,
       conditions,
-      subscriptions
+      subscriptions,
+      attendances
     }
   }
 }

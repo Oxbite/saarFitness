@@ -312,14 +312,15 @@ export function AttendanceForm({
 }
 
 export function AttendanceListUser({ attendances = [], user = {} }) {
+  console.log(attendances)
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
             <TableCell>Arrived at</TableCell>
-            <TableCell align='right'>left at</TableCell>
-            <TableCell align='right'>hours spent</TableCell>
+            <TableCell align='left'>left at</TableCell>
+            <TableCell align='left'>hours spent</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
