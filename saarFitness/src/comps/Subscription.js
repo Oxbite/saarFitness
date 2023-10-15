@@ -45,6 +45,12 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
+export const periods = {
+  1: 'monthly',
+  3: 'quarterly',
+  12: 'yearly'
+}
+
 export default function SubscriptionForm({
   subscription = { start_date: '', end_date: '', period: '', price: '', paid: '0' },
   postto = '/api/addSubscription',
@@ -95,7 +101,17 @@ export default function SubscriptionForm({
           />
         </Grid>
 
-        <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel>Membership type</InputLabel>
+            <Select label='Membership type' name='period' defaultValue='1' onChange={onChange} value={subs.period}>
+              <MenuItem value='1'>3Monthly (1 month)</MenuItem>
+              <MenuItem value='3'>Quaterly (3 months)</MenuItem>
+              <MenuItem value='12'>Anually (1 year)</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        {/* <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
           <TextField
             required
             fullWidth
@@ -113,7 +129,7 @@ export default function SubscriptionForm({
               )
             }}
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
           <TextField
             required
@@ -186,7 +202,9 @@ export function SubscriptionListCustomer({ subscriptions }) {
                 </TableCell>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.period}</Typography>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
+                      {periods[row.period]}
+                    </Typography>
                   </Box>
                 </TableCell>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
