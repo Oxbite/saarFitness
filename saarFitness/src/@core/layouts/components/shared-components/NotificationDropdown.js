@@ -18,6 +18,9 @@ import BellOutline from 'mdi-material-ui/BellOutline'
 
 // ** Third Party Components
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
+import { useEffect } from 'react'
+import axios from 'axios'
+import Link from 'next/link'
 
 // ** Styled Menu component
 const Menu = styled(MuiMenu)(({ theme }) => ({
@@ -85,8 +88,20 @@ const NotificationDropdown = () => {
 
   // ** Hook
   const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'))
+  const [notifications, setNotifications] = useState([]);
+  useEffect(()=> {
+    const api = async ()=> {
+      const n = await axios.get("/api/getNotifications");
+      setNotifications(n.data);
+      console.log(n)
+    }
+    api();
+  }, [])
 
   const handleDropdownOpen = event => {
+    console.log("dropdown opened!!");
+    const ids = notifications.map(e=> e.id);
+    axios.post("/api/readNotification", {ids})
     setAnchorEl(event.currentTarget)
   }
 
@@ -103,10 +118,10 @@ const NotificationDropdown = () => {
       )
     }
   }
-
+  //<MenuItemTitle>Congratulation Flora! 🎉</MenuItemTitle>
   return (
     <Fragment>
-      <IconButton color='inherit' aria-haspopup='true' onClick={handleDropdownOpen} aria-controls='customized-menu'>
+      <IconButton color={ notifications.length > 0 ? "info" : "inherit" } aria-haspopup='true' onClick={handleDropdownOpen} aria-controls='customized-menu'>
         <BellOutline />
       </IconButton>
       <Menu
@@ -118,28 +133,32 @@ const NotificationDropdown = () => {
       >
         <MenuItem disableRipple>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-            <Typography sx={{ fontWeight: 600 }}>Notifications</Typography>
-            <Chip
-              size='small'
-              label='8 New'
-              color='primary'
-              sx={{ height: 20, fontSize: '0.75rem', fontWeight: 500, borderRadius: '10px' }}
-            />
+            <Typography sx={{ fontWeight: 600 }}>Notifications( {notifications.length} )</Typography>
           </Box>
         </MenuItem>
         <ScrollWrapper>
-          <MenuItem onClick={handleDropdownClose}>
-            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-              <Avatar alt='Flora' src='/images/avatars/4.png' />
-              <Box sx={{ mx: 4, flex: '1 1', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
-                <MenuItemTitle>Congratulation Flora! 🎉</MenuItemTitle>
-                <MenuItemSubtitle variant='body2'>Won the monthly best seller badge</MenuItemSubtitle>
-              </Box>
-              <Typography variant='caption' sx={{ color: 'text.disabled' }}>
-                Today
-              </Typography>
-            </Box>
-          </MenuItem>
+          {
+            notifications.map((e)=> {
+              return (
+                <Link href={e.link}>
+                <MenuItem onClick={handleDropdownClose}>
+                <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ mx: 4, flex: '1 1', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
+                <MenuItemSubtitle variant='body2'>{e.message}</MenuItemSubtitle>
+                </Box>
+                </Box>
+                </MenuItem>
+                </Link>
+
+              )
+            })
+          }
+    </ScrollWrapper>
+      </Menu>
+    </Fragment>
+  )
+}
+/**
           <MenuItem onClick={handleDropdownClose}>
             <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
               <Avatar sx={{ color: 'common.white', backgroundColor: 'primary.main' }}>VU</Avatar>
@@ -209,9 +228,5 @@ const NotificationDropdown = () => {
             Read All Notifications
           </Button>
         </MenuItem>
-      </Menu>
-    </Fragment>
-  )
-}
-
+**/
 export default NotificationDropdown

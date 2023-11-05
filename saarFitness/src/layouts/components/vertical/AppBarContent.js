@@ -91,6 +91,7 @@ const AppBarContent = props => {
         </Box>
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
+    <NotificationDropdown />
         <ModeToggler settings={settings} saveSettings={saveSettings} />
       </Box>
     </Box>

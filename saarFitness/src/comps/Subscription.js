@@ -105,7 +105,7 @@ export default function SubscriptionForm({
           <FormControl fullWidth>
             <InputLabel>Membership type</InputLabel>
             <Select label='Membership type' name='period' defaultValue='1' onChange={onChange} value={subs.period}>
-              <MenuItem value='1'>3Monthly (1 month)</MenuItem>
+              <MenuItem value='1'>Monthly (1 month)</MenuItem>
               <MenuItem value='3'>Quaterly (3 months)</MenuItem>
               <MenuItem value='12'>Anually (1 year)</MenuItem>
             </Select>

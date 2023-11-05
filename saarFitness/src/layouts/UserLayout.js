@@ -1,5 +1,4 @@
 // ** MUI Imports
-import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 // ** Layout Imports
@@ -11,7 +10,6 @@ import VerticalNavItems from 'src/navigation/vertical'
 
 // ** Component Import
 import VerticalAppBarContent from './components/vertical/AppBarContent'
-
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
 
@@ -28,9 +26,6 @@ const UserLayout = ({ children }) => {
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
   const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'))
-
-
-
   return (
     <VerticalLayout
       hidden={hidden}

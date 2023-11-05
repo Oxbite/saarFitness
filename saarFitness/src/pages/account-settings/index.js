@@ -99,7 +99,14 @@ export default function ({ customers, total, all }) {
           <UserTableAll customers={all} total={all.length} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='active'>
-          <UserTable customers={customers} total={customers.length} />
+          <UserTable
+            customers={
+              customers.filter (c => {
+              const endDate = new Date(c.end_date)
+
+              return endDate >= new Date()
+            })}
+            total={customers.length} />
         </TabPanel>
 
         <TabPanel sx={{ p: 0 }} value='security'>
@@ -134,7 +141,7 @@ export async function getServerSideProps() {
     })
     .where('s.start_date', '<=', today)
     .whereNotNull('s.id')
-    .whereRaw('s.end_date = (SELECT MAX(end_date) FROM subscription WHERE customer = c.id)')
+    .whereRaw('s.end_date = (SELECT MAX(end_date) FROM subscription WHERE customer = c.id)');
   const all = await db('customer').select('*')
 
   return { props: { customers, all } }

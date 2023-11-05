@@ -1,6 +1,5 @@
 const knex = require('knex')
 const fs = require('fs')
-
 const databaseFilePath = './db.db'
 
 // Check if the file exists
@@ -104,6 +103,20 @@ db.schema
     table.integer('period').notNullable()
     table.float('price').notNullable()
     table.boolean('paid').notNullable()
+  })
+  .then(() => {
+    console.log('Created "subscription" table')
+  })
+  .catch(error => {
+    console.error('Error creating "subscription" table:', error)
+  })
+
+db.schema
+  .createTable('notification', function (table) {
+    table.increments('id').primary()
+    table.boolean('read').notNullable()
+    table.text('message').notNullable()
+    table.string('link').notNullable()
   })
   .then(() => {
     console.log('Created "subscription" table')
