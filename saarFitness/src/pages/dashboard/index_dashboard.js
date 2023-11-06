@@ -1,4 +1,9 @@
 // ** MUI Imports
+import Avatar from '@mui/material/Avatar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import CardContent from '@mui/material/CardContent'
+import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 // ** Icons Imports
 import Poll from 'mdi-material-ui/Poll'
@@ -20,6 +25,7 @@ import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import { Box } from 'mdi-material-ui'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { LogoutOutlined } from '@mui/icons-material'
 
 
 const Dashboard = () => {
@@ -50,56 +56,30 @@ const Dashboard = () => {
           <Grid container spacing={6}>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
-                stats='$25.6k'
+                stats={income.staffCount}
                 icon={<Poll />}
                 color='success'
-                trendNumber='+42%'
-                title='Total Profit'
-                subtitle='Weekly Profit'
+                title='Staff Count'
+                link = "/addstaff"
+                linktext = "Add Staff"
               />
             </Grid>
             <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='$78'
-                title='Refunds'
-                trend='negative'
-                color='secondary'
-                trendNumber='-15%'
-                subtitle='Past Month'
-                icon={<CurrencyUsd />}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='862'
-                trend='negative'
-                trendNumber='-18%'
-                title='New Project'
-                subtitle='Yearly Project'
-                icon={<BriefcaseVariantOutline />}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='15'
-                color='warning'
-                trend='negative'
-                trendNumber='-18%'
-                subtitle='Last Week'
-                title='Sales Queries'
-                icon={<HelpCircleOutline />}
-              />
+      <Card style={{cursor: "pointer"}} onClick={async()=>{
+          const res = await axios.get("/api/logout");
+          if(res.data) {
+            location.reload()
+          }
+      }}>
+        <CardContent>
+
+      <LogoutOutlined />
+          <Typography sx={{ fontWeight: 600, fontSize: '0.875rem' }}>{"Logout"}</Typography>
+        </CardContent>
+      </Card>
+
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <SalesByCountries />
-        </Grid>
-        <Grid item xs={12} md={12} lg={8}>
-          <DepositWithdraw />
-        </Grid>
-        <Grid item xs={12}>
-          <Table />
         </Grid>
       </Grid>
     </ApexChartWrapper>

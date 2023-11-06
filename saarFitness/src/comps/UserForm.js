@@ -83,6 +83,7 @@ export const UserForm = ({
   )
 
   const [date, setDate] = useState(null)
+const logo = '/images/logos/logoSmall.png'
   const [imagefile, setImageFile] = useState(null)
   console.log(userdata)
   const onChange = (e = null) => {

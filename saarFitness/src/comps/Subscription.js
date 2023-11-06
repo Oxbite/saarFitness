@@ -111,25 +111,6 @@ export default function SubscriptionForm({
             </Select>
           </FormControl>
         </Grid>
-        {/* <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
-          <TextField
-            required
-            fullWidth
-            onChange={onChange}
-            type='number'
-            label='Subscription Period'
-            placeholder='In months'
-            name='period'
-            value={subs.period}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AccountOutline />
-                </InputAdornment>
-              )
-            }}
-          />
-        </Grid> */}
         <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
           <TextField
             required

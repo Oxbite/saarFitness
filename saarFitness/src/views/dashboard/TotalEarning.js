@@ -12,37 +12,34 @@ import LinearProgress from '@mui/material/LinearProgress'
 import MenuUp from 'mdi-material-ui/MenuUp'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 
+
+const TotalEarning = ({monthly, quarterly, yearly}) => {
 const data = [
   {
     progress: 75,
     imgHeight: 20,
-    title: 'Zipcar',
+    title: 'Monthly',
     color: 'primary',
-    amount: '$24,895.65',
-    subtitle: 'Vuejs, React & HTML',
+    amount: monthly,
     imgSrc: '/images/cards/logo-zipcar.png'
   },
   {
     progress: 50,
     color: 'info',
     imgHeight: 27,
-    title: 'Bitbank',
-    amount: '$8,650.20',
-    subtitle: 'Sketch, Figma & XD',
+    title: 'Quarterly',
+    amount: quarterly,
     imgSrc: '/images/cards/logo-bitbank.png'
   },
   {
     progress: 20,
     imgHeight: 20,
-    title: 'Aviato',
+    title: 'Yearly',
     color: 'secondary',
-    amount: '$1,245.80',
-    subtitle: 'HTML & Angular',
+    amount: yearly,
     imgSrc: '/images/cards/logo-aviato.png'
   }
 ]
-
-const TotalEarning = () => {
   return (
     <Card>
       <CardHeader
@@ -50,26 +47,15 @@ const TotalEarning = () => {
         titleTypographyProps={{ sx: { lineHeight: '1.6 !important', letterSpacing: '0.15px !important' } }}
         action={
           <IconButton size='small' aria-label='settings' className='card-more-options' sx={{ color: 'text.secondary' }}>
-            <DotsVertical />
           </IconButton>
         }
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(2.25)} !important` }}>
         <Box sx={{ mb: 1.5, display: 'flex', alignItems: 'center' }}>
           <Typography variant='h4' sx={{ fontWeight: 600, fontSize: '2.125rem !important' }}>
-            $24,895
+            Rs {monthly + quarterly + yearly}
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
-            <MenuUp sx={{ fontSize: '1.875rem', verticalAlign: 'middle' }} />
-            <Typography variant='body2' sx={{ fontWeight: 600, color: 'success.main' }}>
-              10%
-            </Typography>
-          </Box>
         </Box>
-
-        <Typography component='p' variant='caption' sx={{ mb: 10 }}>
-          Compared to $84,325 last year
-        </Typography>
 
         {data.map((item, index) => {
           return (

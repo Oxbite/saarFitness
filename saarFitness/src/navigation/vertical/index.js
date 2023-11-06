@@ -14,8 +14,13 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 const navigation = () => {
   return [
     {
-      title: 'Staff',
+      title: "Admin dashboard",
       icon: HomeOutline,
+      path: "/dashboard"
+    },
+    {
+      title: 'Staff',
+      icon: AccountCogOutline,
       path: '/staff'
     },
     {

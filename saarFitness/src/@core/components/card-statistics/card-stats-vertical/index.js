@@ -8,10 +8,11 @@ import CardContent from '@mui/material/CardContent'
 
 // ** Icons Imports
 import DotsVertical from 'mdi-material-ui/DotsVertical'
+import Link from 'next/link'
 
 const CardStatsVertical = props => {
   // ** Props
-  const { title, subtitle, color, icon, stats, trend, trendNumber } = props
+  const { title, subtitle, color, icon, stats, trend, trendNumber, link, linktext} = props
 
   return (
     <Card>
@@ -29,15 +30,10 @@ const CardStatsVertical = props => {
           <Typography variant='h6' sx={{ mr: 2 }}>
             {stats}
           </Typography>
-          <Typography
-            component='sup'
-            variant='caption'
-            sx={{ color: trend === 'positive' ? 'success.main' : 'error.main' }}
-          >
-            {trendNumber}
-          </Typography>
         </Box>
-        <Typography variant='caption'>{subtitle}</Typography>
+
+        <Link href={link}>{linktext}</Link>
+
       </CardContent>
     </Card>
   )

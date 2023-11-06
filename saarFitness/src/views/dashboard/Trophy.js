@@ -21,7 +21,7 @@ const TrophyImg = styled('img')({
   position: 'absolute'
 })
 
-const Trophy = () => {
+const Trophy = ({income}) => {
   // ** Hook
   const theme = useTheme()
   const imageSrc = theme.palette.mode === 'light' ? 'triangle-light.png' : 'triangle-dark.png'
@@ -34,8 +34,8 @@ const Trophy = () => {
           This Month's income
         </Typography>
         <Typography variant='h5' sx={{ my: 4, color: 'primary.main' }}>
-          Rs.170,000
-        </Typography>
+          Rs. {income}
+    </Typography>
       </CardContent>
     </Card>
   )

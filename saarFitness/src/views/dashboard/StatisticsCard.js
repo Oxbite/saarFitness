@@ -15,34 +15,8 @@ import DotsVertical from 'mdi-material-ui/DotsVertical'
 import CellphoneLink from 'mdi-material-ui/CellphoneLink'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 
-const salesData = [
-  {
-    stats: '245k',
-    title: 'Sales',
-    color: 'primary',
-    icon: <TrendingUp sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '35',
-    title: 'Total Customers',
-    color: 'success',
-    icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '1.54k',
-    color: 'warning',
-    title: 'Products',
-    icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '$88k',
-    color: 'info',
-    title: 'Revenue',
-    icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />
-  }
-]
 
-const renderStats = () => {
+const renderStats = (salesData) => {
   return salesData.map((item, index) => (
     <Grid item xs={12} sm={3} key={index}>
       <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -68,14 +42,39 @@ const renderStats = () => {
   ))
 }
 
-const StatisticsCard = () => {
+const StatisticsCard = ({total_customers, total_unpaid, outstanding_income, total_income}) => {
+const salesData = [
+  {
+    stats: total_income,
+    title: 'Total Income',
+    color: 'primary',
+    icon: <TrendingUp sx={{ fontSize: '1.75rem' }} />
+  },
+  {
+    stats: total_customers,
+    title: 'Total Customers',
+    color: 'success',
+    icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
+  },
+  {
+    stats: total_unpaid,
+    color: 'warning',
+    title: 'Total Unpaid',
+    icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />
+  },
+  {
+    stats: outstanding_income,
+    color: 'info',
+    title: 'Outstanding payments',
+    icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />
+  }
+]
   return (
     <Card>
       <CardHeader
         title='Overview'
         action={
           <IconButton size='small' aria-label='settings' className='card-more-options' sx={{ color: 'text.secondary' }}>
-            <DotsVertical />
           </IconButton>
         }
         titleTypographyProps={{
@@ -88,7 +87,7 @@ const StatisticsCard = () => {
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(3)} !important` }}>
         <Grid container spacing={[5, 0]}>
-          {renderStats()}
+          {renderStats(salesData)}
         </Grid>
       </CardContent>
     </Card>
