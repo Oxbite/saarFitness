@@ -65,7 +65,7 @@ const Dashboard = () => {
               />
             </Grid>
             <Grid item xs={6}>
-      <Card style={{cursor: "pointer"}} onClick={async()=>{
+          <Card style={{cursor: "pointer"}} onClick={async()=>{
           const res = await axios.get("/api/logout");
           if(res.data) {
             location.reload()
