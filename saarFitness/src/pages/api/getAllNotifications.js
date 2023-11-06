@@ -1,4 +1,4 @@
-import { knex } from '../../path-to-your-knex-instance';
+  import { db as knex } from "src/lib/db";
 
 export default async (req, res) => {
   if (req.method !== 'GET') {
