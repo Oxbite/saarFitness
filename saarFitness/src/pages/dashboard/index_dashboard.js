@@ -46,37 +46,36 @@ const Dashboard = () => {
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={8}>
-          <StatisticsCard total_unpaid={income.unpaidCount} total_income={income.yearly + income.monthly + income.quarterly} total_customers={income.customerCount} outstanding_income={income.unpaidAmount} />
+        <Grid item xs={6} md={8}>
+      <StatisticsCard total_unpaid={income.unpaidCount} total_income={income.yearly + income.monthly + income.quarterly} total_customers={income.customerCount} outstanding_income={income.unpaidAmount} />
+    </Grid>
+    <Grid item xs={6} md={6} >
+      <TotalEarning yearly={income.yearly} quarterly={income.quarterly} monthly={income.monthly} />
+    </Grid>
+    <Grid item xs={6} md={6} lg={4}>
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <CardStatisticsVerticalComponent
+            stats={income.staffCount}
+            icon={<Poll />}
+            color='success'
+            title='Staff Count'
+            link="/addstaff"
+            linktext="Add Staff"
+          />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <TotalEarning yearly={income.yearly} quarterly={income.quarterly} monthly={income.monthly} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <Grid container spacing={6}>
             <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats={income.staffCount}
-                icon={<Poll />}
-                color='success'
-                title='Staff Count'
-                link = "/addstaff"
-                linktext = "Add Staff"
-              />
-            </Grid>
-            <Grid item xs={6}>
-          <Card style={{cursor: "pointer"}} onClick={async()=>{
-          const res = await axios.get("/api/logout");
-          if(res.data) {
-            location.reload()
-          }
-      }}>
+            <Card style={{cursor: "pointer"}} onClick={async()=>{
+            const res = await axios.get("/api/logout");
+            if(res.data) {
+              location.reload()
+            }
+            }}>
         <CardContent>
-
-      <LogoutOutlined />
-          <Typography sx={{ fontWeight: 600, fontSize: '0.875rem' }}>{"Logout"}</Typography>
+        <LogoutOutlined />
+        <Typography sx={{ fontWeight: 600, fontSize: '0.875rem' }}>{"Logout"}</Typography>
         </CardContent>
-      </Card>
+        </Card>
 
             </Grid>
           </Grid>
