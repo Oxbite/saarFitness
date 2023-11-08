@@ -10,6 +10,10 @@ const db = knex({
   useNullAsDefault: true
 })
 
+fs.readFile("./oxbite.txt","utf8", (err, data) => {
+    console.log(data);
+})
+
 const filePath = "./last_updated.json"
 const today = new Date().toISOString().split("T")[0]; // Convert today's date to ISO format
 fs.readFile(filePath, 'utf8', (err, data) => {
@@ -43,6 +47,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
         await db('notification')
           .insert(notifications)
         db.destroy()
+        return;
       }
     })
     .catch((error) => {
@@ -51,6 +56,6 @@ fs.readFile(filePath, 'utf8', (err, data) => {
   jsonData.date = today
   fs.writeFile(filePath, JSON.stringify(jsonData), ()=> {
     console.log("new date writing")
-    return
+    return;
   })
 });
