@@ -27,6 +27,8 @@ import CakeIcon from '@mui/icons-material/Cake'
 import Radio from '@mui/material/Radio'
 import axios from 'axios'
 import Link from 'next/link'
+import { useValidation } from '@mui/x-date-pickers/internals'
+import { useRouter } from 'next/router'
 
 const ButtonStyled = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -67,6 +69,7 @@ export default function SubscriptionForm({
     0: { text: 'not Paid' },
     1: { text: 'not Paid' }
   }
+  const router = useRouter()
   return (
     <CardContent>
       <h1>Subscription for {user.fname}</h1>
@@ -77,9 +80,13 @@ export default function SubscriptionForm({
           subs.end_date = new Date(subs.start_date)
           subs.end_date.setMonth(subs.end_date.getMonth() + subs.period)
           subs.end_date = subs.end_date.toISOString().split('T')[0]
-          console.log(subs.end_date)
-          await axios.post(postto, { customer: user, subscription: subs })
-          // window.location.reload()
+          const res = await axios.post(postto, { customer: user, subscription: subs })
+          if (res.status == 200){
+            alert("Success");
+          }
+          else {
+            alert("An error occured");
+          }
         }}
       >
         <Grid item xs={12} sm={6}>
@@ -101,7 +108,7 @@ export default function SubscriptionForm({
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} marginTop={2} sm={6}>
           <FormControl fullWidth>
             <InputLabel>Membership type</InputLabel>
             <Select label='Membership type' name='period' defaultValue='1' onChange={onChange} value={subs.period}>
@@ -148,8 +155,29 @@ export default function SubscriptionForm({
 
         <Button type='submit' variant='contained' color='primary' style={{ marginTop: '30px' }}>
           REGISTER
-        </Button>
-      </form>
+    </Button>
+    {subs.id &&
+      <ResetButtonStyled
+      sx={{marginTop: 8}}
+      onClick = {
+        async ()=>{
+          if(confirm("Are you sure you want to delete ?")){
+            const res = await axios.post("/api/delete/subscription", {id: subs.id});
+            if (res.status == 200) {
+              router.push("/account-settings")
+            } else {
+              alert("Error occurred while deleting record")
+            }
+          }
+        }
+      }
+      color='error'
+      variant='outlined'
+      >
+      Remove Subscription
+      </ResetButtonStyled>
+    }
+    </form>
     </CardContent>
   )
 }

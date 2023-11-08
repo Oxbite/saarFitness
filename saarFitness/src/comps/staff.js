@@ -40,6 +40,7 @@ import CakeIcon from '@mui/icons-material/Cake'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import Radio from '@mui/material/Radio'
 import { Error, Warning } from '@material-ui/icons'
+import { useRouter } from 'next/router'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -88,6 +89,7 @@ export const UserForm = ({
   const [cv, setCv] = useState()
   const [cvSrc, setCvSrc] = useState(staff.cv ?? null)
   const [date, setDate] = useState(null)
+  const router = useRouter()
   const onChange = (e = null) => {
     setUser(prev => {
       prev[e.target.name] = e.target.value
@@ -132,10 +134,10 @@ export const UserForm = ({
           try {
             e.preventDefault()
 
-            if (!img && !userdata.image) {
+            /* if (!img && !userdata.image) {
               setErr('Add an Image please')
               return
-            }
+            } */
             if (img && img.length > 0) {
               const data = new FormData()
               data.append('file', img[0])
@@ -157,7 +159,11 @@ export const UserForm = ({
             const res = await axios.post(postto, {
               staff: userdata
             })
+            alert("Success");
             setErr(null)
+            if(!userdata.id) {
+              router.push("/staff")
+            }
           } catch (e) {
             setErr('Some error occured while inserting. Please check the form properly!')
           }
@@ -180,6 +186,7 @@ export const UserForm = ({
                   />
                 </ButtonStyled>
                 <ResetButtonStyled
+                  sx={{marginLeft: 2}}
                   color='error'
                   variant='outlined'
                   onClick={() =>
@@ -188,6 +195,25 @@ export const UserForm = ({
                 >
                   Reset
                 </ResetButtonStyled>
+                {userdata.id &&
+                  <ResetButtonStyled
+                  sx={{marginLeft: 0, marginTop: 2}}
+                    onClick = {
+                      async ()=>{
+                        if(confirm("Are you sure you want to delete this staff record ?")){
+                          const res = await axios.post("/api/delete/staff", {id: userdata.id});
+                          if (res.status == 200) {
+                            router.push("/account-settings")
+                          }
+                        }
+                      }
+                    }
+                    color='error'
+                    variant='outlined'
+                  >
+                  Remove this staff
+                </ResetButtonStyled>
+              }
                 <Typography variant='body2' sx={{ marginTop: 5 }}>
                   Allowed PNG or JPEG. Max size of 800K.
                 </Typography>

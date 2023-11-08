@@ -24,6 +24,7 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
 import LocationCityIcon from '@mui/icons-material/LocationCity'
 import Divider from '@mui/material/Divider'
 import CakeIcon from '@mui/icons-material/Cake'
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import Radio from '@mui/material/Radio'
 import axios from 'axios'
@@ -100,7 +101,6 @@ export const UserForm = ({
   const router = useRouter()
   const onImageChange = file => {
     const reader = new FileReader()
-
     const { files } = file.target
     setImageFile(file.target.files)
     if (files && files.length !== 0) {
@@ -114,10 +114,11 @@ export const UserForm = ({
         onSubmit={async e => {
           e.preventDefault()
           const data = new FormData()
+          /*
           if (!imagefile && !userdata.id) {
             setErr('Add and Image please')
             return
-          }
+          }*/
           if (imagefile) {
             for (const file of imagefile) {
               data.append('file', file)
@@ -129,9 +130,12 @@ export const UserForm = ({
             customer: userdata,
             conditions: conditions
           })
-          console.log(redirect)
+          if(res.status != 200) {
+            alert("An error occurred");
+            return;
+          }
+          alert("Success");
           if (redirect) {
-            console.log('here')
             console.log(res.data)
             router.push('/account-settings/' + res.data.data[0])
           }
@@ -153,9 +157,29 @@ export const UserForm = ({
                     id='account-settings-upload-image'
                   />
                 </ButtonStyled>
+              {userdata.id &&
+                <ResetButtonStyled
+                  onClick = {
+                    async ()=>{
+                      if(confirm("Deleting customer will delete other data related to customer as well. (subscriptions and attendance).")){
+
+                        const res = await axios.post("/api/delete/customer", {id: userdata.id});
+                        if (res.status == 200) {
+                          router.push("/account-settings")
+                        }
+                      }
+                    }
+                  }
+                  color='error'
+                  variant='outlined'
+                >
+                  Remove this customer
+                </ResetButtonStyled>
+              }
                 <ResetButtonStyled
                   color='error'
                   variant='outlined'
+                  sx={{marginTop: 2, marginLeft: 2}}
                   onClick={() =>
                     setImgSrc(userdata.image ? '/images/avatars/' + userdata.image : '/images/avatars/1.png')
                   }
@@ -288,7 +312,6 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
               onChange={onChange}
               fullWidth
               name='height'
@@ -307,7 +330,6 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
               fullWidth
               onChange={onChange}
               type='Number'
@@ -327,7 +349,6 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
               fullWidth
               label='Training type'
               onChange={onChange}
@@ -337,7 +358,7 @@ export const UserForm = ({
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
-                    <Phone />
+                  <EmojiPeopleIcon />
                   </InputAdornment>
                 )
               }}
@@ -396,6 +417,7 @@ export const UserForm = ({
                 const nprop = [...conditions, { year: '', detail: '', type: 'physical' }]
                 setConditions(nprop)
               }}
+    sx={{marginTop: 5}}
             >
               Add Condition
             </ButtonStyled>
@@ -452,11 +474,11 @@ export const UserForm = ({
                     onChange={e => {
                       onConditionChange(e, i)
                     }}
+                sx={{marginTop: 2}}
                     defaultValue={c.type.length > 0 ? c.type : 'physical'}
                   >
-                    <MenuItem value='medical'>medical</MenuItem>
-                    <MenuItem value='physical'>physical</MenuItem>
-                    <MenuItem value='pending'>Strength Training</MenuItem>
+                    <MenuItem value='medical'>Medical</MenuItem>
+                    <MenuItem value='physical'>Physical</MenuItem>
                   </Select>
                   <ResetButtonStyled
                     color='error'
