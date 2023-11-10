@@ -98,6 +98,8 @@ db.schema
   .createTable('subscription', function (table) {
     table.increments('id').primary()
     table.integer('customer').notNullable()
+    table.integer('trainer')
+    table.float('pt_price')
     table.date('start_date').notNullable()
     table.date('end_date').notNullable()
     table.integer('period').notNullable()
@@ -124,3 +126,4 @@ db.schema
   .catch(error => {
     console.error('Error creating "subscription" table:', error)
   })
+

@@ -50,6 +50,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 export const periods = {
   1: 'monthly',
   3: 'quarterly',
+  6: 'bi-yearly',
   12: 'yearly'
 }
 
@@ -114,6 +115,7 @@ export default function SubscriptionForm({
             <Select label='Membership type' name='period' defaultValue='1' onChange={onChange} value={subs.period}>
               <MenuItem value='1'>Monthly (1 month)</MenuItem>
               <MenuItem value='3'>Quaterly (3 months)</MenuItem>
+              <MenuItem value='6'>Bi-Yearly (6 months)</MenuItem>
               <MenuItem value='12'>Anually (1 year)</MenuItem>
             </Select>
           </FormControl>
