@@ -17,6 +17,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { useRouter } from 'next/router'
 import Error404 from '../404'
 import { AttendanceListUser } from 'src/comps/Attendance'
+import { TrainerForm, TrainerList } from 'src/comps/Subscription'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -36,7 +37,7 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const AccountSettings = ({ attendances, customer = null, conditions = null, subscriptions }) => {
+const AccountSettings = ({ programs, attendances,trainers, customer = null, conditions = null, subscriptions }) => {
   // ** State
   const [value, setValue] = useState('account')
   if (!customer) {
@@ -91,6 +92,24 @@ const AccountSettings = ({ attendances, customer = null, conditions = null, subs
               </Box>
             }
           />
+          <Tab
+            value='trainers'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <InformationOutline />
+                <TabName>Trainer</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value='trainerform'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <InformationOutline />
+                <TabName>Add Trainer</TabName>
+              </Box>
+            }
+          />
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
@@ -104,6 +123,12 @@ const AccountSettings = ({ attendances, customer = null, conditions = null, subs
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='attendance'>
           <AttendanceListUser attendances={attendances} user={customer} />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='trainers'>
+          <TrainerList trainers={programs} user={customer} />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='trainerform'>
+          <TrainerForm trainers={trainers} user={customer} />
         </TabPanel>
       </TabContext>
     </Card>
@@ -120,12 +145,20 @@ export async function getServerSideProps({ params }) {
   const subscriptions = await db('subscription').select('*').where('customer', id)
   const conditions = await db('conditions').select('*').where('customer', id)
   const attendances = await db('attendance').select('*').where('customer', id).orderBy('arrival', 'desc')
+  const trainers = await db('staff').select('*')
+  const programs = await db('trainer')
+  .select('trainer.*', 'staff.id as staff_id', 'staff.fname')
+  .join('staff', 'trainer.trainer', '=', 'staff.id')
+  .where('trainer.customer', id)
+  console.log(programs)
   return {
     props: {
       customer: customer[0] ?? null,
       conditions,
       subscriptions,
-      attendances
+      attendances,
+      trainers,
+      programs,
     }
   }
 }

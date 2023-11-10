@@ -54,6 +54,152 @@ export const periods = {
   12: 'yearly'
 }
 
+
+export function TrainerForm({trainerx = {trainer: '', period: '', start_date: '', price: ''}, trainers, postto = '/api/addTrainer', user}){
+  const [trainer, setSub] = useState(trainerx)
+  const onChange = (e = null) => {
+    setSub(prev => {
+      prev[e.target.name] = e.target.value
+      return { ...prev }
+    })
+  }
+  const router = useRouter()
+  const statusObj = {
+    0: { text: 'not Paid' },
+    1: { text: 'not Paid' }
+  }
+  return (
+    <CardContent>
+      <h1>Personal Training program for {user.fname}</h1>
+      <form
+        onSubmit={async e => {
+          e.preventDefault()
+          trainer.customer = user.id
+          trainer.end_date = new Date(trainer.start_date)
+          trainer.end_date.setMonth(trainer.end_date.getMonth() + trainer.period)
+          console.log(trainer.end_date)
+          trainer.end_date = trainer.end_date.toISOString().split('T')[0]
+          const res = await axios.post(postto, { customer: user, trainer: trainer })
+          if (res.status == 200){
+            alert("Success");
+          }
+          else {
+            alert("An error occured");
+          }
+        }}
+      >
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            onChange={onChange}
+            fullWidth
+            value={trainer.start_date}
+            type='date'
+            label='start date'
+            name='start_date'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <CakeIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={12} marginTop={2} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel>Trainer</InputLabel>
+            <Select label='Membership type' name='trainer' defaultValue='1' onChange={onChange} value={trainer.trainer}>
+              {
+                trainers.map((e)=>{
+                  return(
+                    <MenuItem value={e.id} key={e.id}>{e.fname} </ MenuItem>
+                  )
+                })
+
+              }
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={12} marginTop={2} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel>Membership type</InputLabel>
+            <Select label='Membership type' name='period' defaultValue='1' onChange={onChange} value={trainer.period}>
+              <MenuItem value='1'>Monthly (1 month)</MenuItem>
+              <MenuItem value='3'>Quaterly (3 months)</MenuItem>
+              <MenuItem value='6'>Bi-Yearly (6 months)</MenuItem>
+              <MenuItem value='12'>Anually (1 year)</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
+          <TextField
+            required
+            fullWidth
+            onChange={onChange}
+            type='number'
+            label='Subscription price'
+            placeholder='per month'
+            name='price'
+            value={trainer.price}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <AccountOutline />
+                </InputAdornment>
+              )
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+            <FormLabel sx={{ fontSize: '0.875rem' }}>Payment status</FormLabel>
+            <RadioGroup
+              row
+              defaultValue={trainer.paid}
+              name='paid'
+              aria-label='payment status'
+              onChange={onChange}
+            >
+              <FormControlLabel value='1' label='paid' control={<Radio />} />
+              <FormControlLabel value='0' label='not paid' control={<Radio />} />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+
+        <Button type='submit' variant='contained' color='primary' style={{ marginTop: '30px' }}>
+          REGISTER
+    </Button>
+    {trainer.id &&
+      <ResetButtonStyled
+      sx={{marginTop: 8}}
+      onClick = {
+        async ()=>{
+          if(confirm("Are you sure you want to delete ?")){
+            const res = await axios.post("/api/delete/trainer", {id: trainer.id});
+            if (res.status == 200) {
+              router.push("/account-settings")
+            } else {
+              alert("Error occurred while deleting record")
+            }
+          }
+        }
+      }
+      color='error'
+      variant='outlined'
+      >
+      Remove Subscription
+      </ResetButtonStyled>
+    }
+    </form>
+    </CardContent>
+
+  )
+
+}
+
 export default function SubscriptionForm({
   subscription = { start_date: '', end_date: '', period: '', price: '', paid: '0' },
   postto = '/api/addSubscription',
@@ -144,7 +290,7 @@ export default function SubscriptionForm({
             <FormLabel sx={{ fontSize: '0.875rem' }}>Payment status</FormLabel>
             <RadioGroup
               row
-              defaultValue={subscription.paid}
+              defaultValue={subs.paid}
               name='paid'
               aria-label='payment status'
               onChange={onChange}
@@ -181,6 +327,87 @@ export default function SubscriptionForm({
     }
     </form>
     </CardContent>
+  )
+}
+
+export function TrainerList({ trainers}) {
+  const statusObj = {
+    1: { color: 'success', text: 'paid' },
+    0: { color: 'error', text: 'unpaid' }
+  }
+  return (
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label='sticky table'>
+          <TableHead>
+            <TableRow>
+              <TableCell>Trainer Name</TableCell>
+              <TableCell>Start Date</TableCell>
+              <TableCell> Period</TableCell>
+              <TableCell> end_date</TableCell>
+              <TableCell>payment Status</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {trainers.map(row => (
+              <TableRow hover key={row.start_date} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.fname}</Typography>
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.start_date}</Typography>
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
+                      {periods[row.period]}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
+                      {new Date(row.end_date).toString()}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Chip
+                    label={statusObj[row.paid].text}
+                    color={statusObj[row.paid].color}
+                    sx={{
+                      height: 24,
+                      fontSize: '0.75rem',
+                      textTransform: 'capitalize',
+                      '& .MuiChip-label': { fontWeight: 500 }
+                    }}
+                  />
+                </TableCell>
+                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Link
+                      href={'/editTrainer/' + row.id}
+                      style={{
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important', cursor: 'pointer' }}>
+                        Edit
+                      </Typography>
+                    </Link>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   )
 }
 

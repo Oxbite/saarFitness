@@ -98,8 +98,6 @@ db.schema
   .createTable('subscription', function (table) {
     table.increments('id').primary()
     table.integer('customer').notNullable()
-    table.integer('trainer')
-    table.float('pt_price')
     table.date('start_date').notNullable()
     table.date('end_date').notNullable()
     table.integer('period').notNullable()
@@ -113,6 +111,25 @@ db.schema
     console.error('Error creating "subscription" table:', error)
   })
 
+
+db.schema
+  .createTable('trainer', function (table) {
+    table.increments('id').primary()
+    table.integer('customer').notNullable()
+    table.integer('trainer').notNullable()
+    table.date('start_date')
+    table.date('end_date')
+    table.integer('period')
+    table.float('price')
+    table.boolean('paid')
+  })
+  .then(() => {
+    console.log('Created "trainer" table')
+  })
+  .catch(error => {
+    console.error('Error creating "trainer" table:', error)
+  })
+
 db.schema
   .createTable('notification', function (table) {
     table.increments('id').primary()
@@ -121,9 +138,9 @@ db.schema
     table.string('link').notNullable()
   })
   .then(() => {
-    console.log('Created "subscription" table')
+    console.log('Created "notification" table')
   })
   .catch(error => {
-    console.error('Error creating "subscription" table:', error)
+    console.error('Error creating "notification" table:', error)
   })
 
