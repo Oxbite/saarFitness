@@ -1,13 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/uploads/*
 /node_modules
+/node_moduole/*
 /.pnp
 .pnp.js
 /public/*
 # testing
 /coverage
+/uploads/*
 
 # next.js
 /.next/
