@@ -483,9 +483,7 @@ export const UserForm = ({
               Physical Conditions
             </Typography>
             <Typography variant='body2'>
-              To ensure safety and successful program, it is necessart to know any physical contions that may reqyuire a
-              change to the program. Please note any injuries or surgeries that should be considered for your training
-              program.
+            To ensure the safety and success of the program, it is necessary to be aware of any physical conditions that may require adjustments to the program. Please provide information about any injuries or surgeries that should be considered when designing your training program.
             </Typography>
             <ButtonStyled
               component='label'
@@ -506,6 +504,7 @@ export const UserForm = ({
               return (
                 <Grid key={i}>
                   <TextField
+                    sx={{ marginLeft: 10, marginTop: 10 }}
                     required
                     fullWidth
                     name='year'
@@ -533,7 +532,7 @@ export const UserForm = ({
                     minRows={3}
                     label='Details'
                     placeholder='Example: Small crack on my left shoulder by falling from bicycle'
-                    sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                    sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } , marginLeft: 10, marginTop: 10 }}
                     value={c.detail}
                     onChange={e => {
                       onConditionChange(e, i)
@@ -552,8 +551,9 @@ export const UserForm = ({
                     onChange={e => {
                       onConditionChange(e, i)
                     }}
-                sx={{marginTop: 2}}
+                sx={{marginTop: 2, marginLeft: 10}}
                     defaultValue={c.type.length > 0 ? c.type : 'physical'}
+                    
                   >
                     <MenuItem value='medical'>Medical</MenuItem>
                     <MenuItem value='physical'>Physical</MenuItem>
@@ -579,6 +579,9 @@ export const UserForm = ({
               )
             })}
         </Grid>
+        <Typography variant='h6' sx={{ marginTop: 10 }}>
+            NOTE: SAAR FITNESS PVT. LTD. WILL NOT BE RESPONSIBLE IF INCASE OF ANY ACCIDENT OR INJURIES.
+        </Typography>
 
         <Button type='submit' variant='contained' color='primary' style={{ marginTop: '30px' }}>
           REGISTER
