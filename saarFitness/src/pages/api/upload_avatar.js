@@ -13,12 +13,10 @@ export default async function handle(req, res) {
 
     console.log(files)
     const { file } = files
-    const uploadDirectory = path.resolve('./public/images/avatars/')
-
+    const uploadDirectory = path.resolve('./cdn/uploads/')
     if (!fs.existsSync(uploadDirectory)) {
       fs.mkdirSync(uploadDirectory, { recursive: true })
     }
-
     const links = []
     for (let i of file) {
       const ext = i.originalFilename.split('.').pop()

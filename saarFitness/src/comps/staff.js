@@ -1,4 +1,5 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, useState, useRef } from 'react'
+import Webcam from "react-webcam"
 import Box from '@mui/material/Box'
 import TablePagination from '@mui/material/TablePagination'
 import Paper from '@mui/material/Paper'
@@ -81,15 +82,17 @@ export const UserForm = ({
   const [openAlert, setOpenAlert] = useState(true)
   const logo = '/images/logos/logoSmall.png'
   const [userdata, setUser] = useState({ ...staff })
-  const [imgSrc, setImgSrc] = useState('/images/avatars/' + (staff.image ?? '1.png'))
+  const [imgSrc, setImgSrc] = useState(staff.image ? "http://localhost:3002/"+ staff.image: '/images/avatars/1.png')
   const [img, setImg] = useState()
-  const [ctSrc, setCtSrc] = useState(staff.citizenship ?? '/images/avatars/1.png')
+  const [ctSrc, setCtSrc] = useState(staff.citizenship ?"http://localhost:3002/"+staff.citizenship :  '/images/avatars/1.png')
   const [ct, setCt] = useState()
   const [err, setErr] = useState()
   const [cv, setCv] = useState()
-  const [cvSrc, setCvSrc] = useState(staff.cv ?? null)
+  const [cvSrc, setCvSrc] = useState(staff.cv ? "http://localhost:3002/" +staff.cv: null)
   const [date, setDate] = useState(null)
   const router = useRouter()
+  const webref = useRef(null);
+  const [cameraOn, setCamera] = useState(false);
   const onChange = (e = null) => {
     setUser(prev => {
       prev[e.target.name] = e.target.value
@@ -169,6 +172,30 @@ export const UserForm = ({
           }
         }}
       >
+    <Button onClick={async()=> {
+        if (!cameraOn){
+          setCamera(true);
+          return
+        }
+
+        const imagesrc = webref.current.getScreenshot();
+        console.log(imagesrc)
+        const imageSrc = webref.current.getScreenshot();
+
+        // Convert data URL to Blob
+        const blob = await fetch(imageSrc).then(res => res.blob());
+
+        setImgSrc(imagesrc);
+      const fileName = 'screenshot.png';
+    const file = new File([blob], fileName, { type: blob.type });
+
+        setImg([file]);
+
+    }} > {cameraOn ? "Capture" : "Turn on Camera"}</Button>
+    {
+      cameraOn &&
+      <Webcam height= {200} width={100} ref={webref} />
+    }
         <Grid container spacing={7}>
           <Grid item xs={12} sm={6} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -408,7 +435,6 @@ export const UserForm = ({
                   const reader = new FileReader()
                   const { files } = e.target
                   setCv(e.target.files)
-
                   console.log(e.target.files[0].name)
                   if (files && files.length !== 0) {
                     reader.onload = () => setCvSrc(reader.result)

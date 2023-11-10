@@ -1,4 +1,5 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, useState, useRef } from 'react'
+import Webcam from "react-webcam"
 import RadioGroup from '@mui/material/RadioGroup'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -29,6 +30,11 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import Radio from '@mui/material/Radio'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+
+// kg, cm
+export function BMI(weight, height){
+  return weight / ((height / 100) * (height / 100))
+}
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -68,6 +74,41 @@ const userdata = {
   emergency_phone: ''
 }
 
+// give 0 or false for female and 1 or true for male in gender
+export function BMR(weight, height, age, gender){
+  //Male BMR = (9.99 × weight [kg]) + (6.25 × height [cm]) − (4.92 × age [years]) + 5.
+  // Female BMR = (9.99 × weight [kg]) + (6.25 × height [cm]) − (4.92 × age [years]) − 161.
+  if (gender) {
+    return 9.99* weight +height  * 6.25 - (4.92 * age) + 5;
+  }
+  else {
+    return 9.99 * weight + 6.25 * height - 4.92 * age - 161;
+  }
+}
+
+function calculateAge(dateOfBirth) {
+    // Parse the date of birth string into a Date object
+    const dob = new Date(dateOfBirth);
+    console.log(dob, dateOfBirth)
+    // Get the current date
+    const currentDate = new Date();
+
+    // Calculate the difference in years
+    const age = currentDate.getFullYear() - dob.getFullYear();
+
+    // Adjust the age based on the month and day of birth
+    if (
+        currentDate.getMonth() < dob.getMonth() ||
+        (currentDate.getMonth() === dob.getMonth() && currentDate.getDate() < dob.getDate())
+    ) {
+        return age - 1; // Subtract 1 if the birthday hasn't occurred yet this year
+    } else {
+        return age;
+    }
+}
+
+
+
 export const UserForm = ({
   customer = userdata,
   cond = [],
@@ -80,7 +121,7 @@ export const UserForm = ({
   const [userdata, setUser] = useState({ ...customer })
   const [conditions, setConditions] = useState([...cond])
   const [imgSrc, setImgSrc] = useState(
-    userdata.image?.length > 0 ? '/images/avatars/' + userdata.image : '/images/avatars/1.png'
+    userdata.image?.length > 0 ? 'http://localhost:3002/' + userdata.image : '/images/avatars/1.png'
   )
 
   const [date, setDate] = useState(null)
@@ -98,16 +139,21 @@ export const UserForm = ({
     setConditions(nprop)
   }
   const [err, setErr] = useState('')
+  const [age, setAge] = useState(calculateAge(userdata.dob))
   const router = useRouter()
   const onImageChange = file => {
     const reader = new FileReader()
     const { files } = file.target
     setImageFile(file.target.files)
+    console.log(file.target.files, imagefile);
     if (files && files.length !== 0) {
       reader.onload = () => setImgSrc(reader.result)
       reader.readAsDataURL(files[0])
     }
   }
+  const webref = useRef(null);
+  const [cameraOn, setCamera] = useState(false);
+
   return (
     <CardContent>
       <form
@@ -141,6 +187,30 @@ export const UserForm = ({
           }
         }}
       >
+    <Button onClick={async()=> {
+        if (!cameraOn){
+          setCamera(true);
+          return
+        }
+
+        const imagesrc = webref.current.getScreenshot();
+        console.log(imagesrc)
+        const imageSrc = webref.current.getScreenshot();
+
+        // Convert data URL to Blob
+        const blob = await fetch(imageSrc).then(res => res.blob());
+
+        setImgSrc(imagesrc);
+      const fileName = 'screenshot.png';
+    const file = new File([blob], fileName, { type: blob.type });
+
+        setImageFile([file]);
+
+    }} > {cameraOn ? "Capture" : "Turn on Camera"}</Button>
+    {
+      cameraOn &&
+      <Webcam height= {200} width={100} ref={webref} />
+    }
         <Grid container spacing={7}>
           <Grid item xs={12} sm={6} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -181,7 +251,7 @@ export const UserForm = ({
                   variant='outlined'
                   sx={{marginTop: 2, marginLeft: 2}}
                   onClick={() =>
-                    setImgSrc(userdata.image ? '/images/avatars/' + userdata.image : '/images/avatars/1.png')
+                    setImgSrc(userdata.image ? 'http://localhost:3002/' + userdata.image : '/images/avatars/1.png')
                   }
                 >
                   Reset
@@ -383,6 +453,14 @@ export const UserForm = ({
                 )
               }}
             />
+          <Grid item xs = {0} sm = {6}>
+                <Typography variant='body1' sx={{ marginTop: 5 }}>
+                  Age: {calculateAge(userdata.dob)}<br />
+                  BMR: {BMR(userdata.weight, userdata.height, calculateAge(userdata.dob), userdata.gender == "male" ? true : false)}
+    <br />
+                    BMI: {BMI(userdata.weight, userdata.height)}
+                </Typography>
+            </Grid>
           </Grid>
 
           {/* <Grid item xs={12} sm={6}>
@@ -426,7 +504,7 @@ export const UserForm = ({
           {conditions.length > 0 &&
             conditions.map((c, i) => {
               return (
-                <Grid item>
+                <Grid key={i}>
                   <TextField
                     required
                     fullWidth

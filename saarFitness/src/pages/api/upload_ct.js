@@ -13,7 +13,7 @@ export default async function handle(req, res) {
 
     console.log(files)
     const { file } = files
-    const uploadDirectory = path.resolve('./public/images/ct/')
+    const uploadDirectory = path.resolve('./cdn/uploads/')
 
     if (!fs.existsSync(uploadDirectory)) {
       fs.mkdirSync(uploadDirectory, { recursive: true })
@@ -26,7 +26,7 @@ export default async function handle(req, res) {
       const filePath = path.join(uploadDirectory, filename)
 
       fs.writeFileSync(filePath, fs.readFileSync(i.path))
-      links.push(`/images/ct/${filename}`)
+      links.push(`${filename}`)
     }
 
     return res.json({ links })
