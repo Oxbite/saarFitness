@@ -52,7 +52,7 @@ const salesData = [
   },
   {
     stats: total_customers,
-    title: 'Total Customers',
+    title: 'Number of Clients',
     color: 'success',
     icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
   },

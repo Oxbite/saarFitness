@@ -112,7 +112,7 @@ const LoginPage = () => {
               Welcome to SAAR FITNESS!
             </Typography>
             <Typography variant='body2'>Please sign-in to your account to proceed</Typography>
-              <ImgStyled  src={logo} alt='Profile Pic' sx={{ marginTop: 5}} />
+              <ImgStyled  src={logo} alt='Profile Pic' sx={{ marginTop: 5 , height: 200}} />
           </Box>
           <form noValidate autoComplete='off' onSubmit={async (e)=>{
             e.preventDefault();

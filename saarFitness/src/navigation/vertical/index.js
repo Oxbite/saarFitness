@@ -24,7 +24,7 @@ const navigation = () => {
       path: '/staff'
     },
     {
-      title: 'Customers',
+      title: 'Clients',
       icon: AccountCogOutline,
       path: '/account-settings'
     },
@@ -39,7 +39,7 @@ const navigation = () => {
     //   openInNewTab: false
     // },
     {
-      title: 'Add Customer',
+      title: 'Add Clients',
       icon: AccountPlusOutline,
       path: '/addcustomer',
       openInNewTab: false

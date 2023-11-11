@@ -265,10 +265,10 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-              <ImgStyled src={logo} alt='Profile Pic' sx={{ marginLeft: 'auto' }} />
-              <Typography variant='h6' sx={{ marginLeft: 'auto' }}>
+              <ImgStyled src={logo} alt='Profile Pic' sx={{ marginLeft: 'auto', height: 200 }} />
+              {/* <Typography variant='h6' sx={{ marginLeft: 'auto' }}>
                 SAAR FITNESS
-              </Typography>
+              </Typography> */}
             </Box>
           </Grid>
 
