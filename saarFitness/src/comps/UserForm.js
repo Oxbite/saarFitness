@@ -33,7 +33,8 @@ import { useRouter } from 'next/router'
 
 // kg, cm
 export function BMI(weight, height){
-  return weight / ((height / 100) * (height / 100))
+  height = height/100
+  return weight / (height * height)
 }
 
 const ImgStyled = styled('img')(({ theme }) => ({
