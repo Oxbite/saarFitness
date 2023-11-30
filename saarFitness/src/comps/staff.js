@@ -352,12 +352,11 @@ export const UserForm = ({
               <InputLabel>Shift</InputLabel>
               <Select onChange={onChange} label='Training type' name='shift' defaultValue={userdata.shift ?? 'active'}>
                 <MenuItem value='morning'>Morning</MenuItem>
-                <MenuItem value='day'>Day</MenuItem>
-                <MenuItem value='night'>Night</MenuItem>
+                <MenuItem value='evening'>Evening</MenuItem>
+                <MenuItem value='both'>both</MenuItem>
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={12} sm={6}>
             <TextField
               required
