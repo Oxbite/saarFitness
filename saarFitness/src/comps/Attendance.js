@@ -52,7 +52,7 @@ export function AttendanceDate({ cust, att }) {
       </Typography>
       <Grid item xs={12} sm={6}>
         <TextField
-          required
+          
           onChange={async e => {
             const ndate = new Date(e.target.value).toISOString().split('T')[0]
             const res = await axios.get('/api/getAttendance', {
@@ -266,7 +266,7 @@ export function AttendanceForm({
       >
         <Grid item xs={12} sm={6}>
           <TextField
-            required
+            
             fullWidth
             label='arrival'
             placeholder='arrival time'
@@ -285,7 +285,7 @@ export function AttendanceForm({
 
         <Grid item xs={12} sm={6}>
           <TextField
-            required
+            
             fullWidth
             onChange={onChange}
             label='departure time'

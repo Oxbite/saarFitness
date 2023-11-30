@@ -256,7 +256,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               onChange={onChange}
               label='Full Name'
@@ -274,7 +274,7 @@ export const UserForm = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               onChange={onChange}
               fullWidth
               label='date of birth'
@@ -293,7 +293,7 @@ export const UserForm = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               onChange={onChange}
               label='Joined Date'
@@ -359,7 +359,7 @@ export const UserForm = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               label='address'
               placeholder='address'

@@ -274,7 +274,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               onChange={onChange}
               label='Full Name'
@@ -293,7 +293,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               onChange={onChange}
               fullWidth
               label='Address'
@@ -312,7 +312,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               onChange={onChange}
               fullWidth
               value={userdata.dob}
@@ -342,7 +342,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               value={userdata.phone}
               onChange={onChange}
@@ -362,7 +362,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               type='email'
               onChange={onChange}
@@ -437,7 +437,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               type='number'
               name='emergency_phone'
@@ -505,7 +505,7 @@ export const UserForm = ({
                 <Grid key={i}>
                   <TextField
                     sx={{ marginLeft: 10, marginTop: 10 }}
-                    required
+                    
                     fullWidth
                     name='year'
                     type='number'
@@ -524,7 +524,7 @@ export const UserForm = ({
                     }}
                   />
                   <TextField
-                    required
+                    
                     style={{ marginTop: '10px' }}
                     fullWidth
                     name='detail'
