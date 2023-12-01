@@ -197,7 +197,6 @@ export function TrainerForm({trainerx = {trainer: '', period: '', start_date: ''
     </CardContent>
 
   )
-
 }
 
 export default function SubscriptionForm({
@@ -225,7 +224,7 @@ export default function SubscriptionForm({
           e.preventDefault()
           subs.customer = user.id
           subs.end_date = new Date(subs.start_date)
-          subs.end_date.setMonth(subs.end_date.getMonth() + subs.period)
+          subs.end_date.setMonth(subs.end_date.getMonth()+parseInt(subs.period));
           subs.end_date = subs.end_date.toISOString().split('T')[0]
           const res = await axios.post(postto, { customer: user, subscription: subs })
           if (res.status == 200){
@@ -372,7 +371,7 @@ export function TrainerList({ trainers}) {
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
-                      {new Date(row.end_date).toString()}
+                      {new Date(row.end_date)}
                     </Typography>
                   </Box>
                 </TableCell>
@@ -448,7 +447,7 @@ export function SubscriptionListCustomer({ subscriptions }) {
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
-                      {new Date(row.end_date).toString()}
+                      {row.end_date}
                     </Typography>
                   </Box>
                 </TableCell>
