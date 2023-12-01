@@ -81,7 +81,7 @@ export default function Page({ staff, attendances }) {
         <TabPanel sx={{ p: 0 }} value='attendances'>
           <AttendanceListUser attendances={attendances} editLink = {(e)=>{
             return (
-              <Link passHref href={"/api/attendance/staff/byuser/" + e.staff}><Typography color={"white"} style={{color: "white"}
+              <Link passHref href={"/attendance/staff/" + e.staff}><Typography color={"white"} style={{color: "white"}
 
             } > Edit</Typography></Link>)
           }

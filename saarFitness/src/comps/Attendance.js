@@ -57,7 +57,7 @@ export function StaffAttendance({data}) {
       if(nAt[idx].attendance_id) {
         at.id = nAt[idx].attendance_id
       }
-      const ids = await axios.post('/api/staffAttendance', { attendance: {}})
+      const ids = await axios.post('/api/staffAttendance', { attendance: at})
       if (ids.data.data.length > 0) {
         nAt[idx].attendance_id = ids.data.data[0];
       }
@@ -97,7 +97,11 @@ export function StaffAttendance({data}) {
               <div>
                 {`arrived At: ${attendance.arrival}` } <br />
                 {`departed At: ${attendance.departure ?? "not set "}` }<br />
-                {`Hours : ${!attendance.departure ? "not departed yet" :  getHoursDifference(new Date(attendance.arrival), new Date(attendance.departure))}`}
+                {`Hours : ${!attendance.departure ? "not departed yet" :
+                    function (t1, t2){
+                      const diff = getTimeDifference(t1,t2)
+                      return diff.hours + "hours " + diff.minutes + "minutes"
+                }(new Date(attendance.arrival), new Date(attendance.departure))  }`}
             </div>
             </>
           )}
@@ -122,10 +126,17 @@ export function StaffAttendance({data}) {
     }} />
   )
 }
+function getTimeDifference(date1, date2) {
+  const timeDifference = Math.abs(date1.getTime()- date2.getTime())
 
-function getHoursDifference(date1, date2) {
-  const timeDifference = Math.abs(date1.getTime() - date2.getTime());
-  return timeDifference / (1000 * 60 * 60); // milliseconds to hours
+  // Calculate hours and remaining minutes
+  const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+  const remainingMinutes = (timeDifference % (1000 * 60 * 60)) / (1000 * 60);
+
+  return {
+    hours,
+    minutes: Math.round(remainingMinutes), // Round to the nearest minute
+  };
 }
 
 export function AttendanceDate({ cust, att }) {
@@ -143,7 +154,7 @@ export function AttendanceDate({ cust, att }) {
       </Typography>
       <Grid item xs={12} sm={6}>
         <TextField
-          
+
           onChange={async e => {
             const ndate = new Date(e.target.value).toISOString().split('T')[0]
             const res = await axios.get('/api/getAttendance', {
@@ -356,7 +367,7 @@ export function AttendanceForm({
       >
         <Grid item xs={12} sm={6}>
           <TextField
-            
+
             fullWidth
             label='arrival'
             placeholder='arrival time'
@@ -375,7 +386,7 @@ export function AttendanceForm({
 
         <Grid item xs={12} sm={6}>
           <TextField
-            
+
             fullWidth
             onChange={onChange}
             label='departure time'
@@ -420,7 +431,12 @@ export function AttendanceListUser({ attendances = [], editLink}) {
               <TableRow key= {i}>
                 <TableCell>{dateToString(new Date(e.arrival))}</TableCell>
                 <TableCell>{dateToString(new Date(e.departure))}</TableCell>
-                <TableCell>{(new Date(e.departure) - new Date(e.arrival)) / (1000 * 60 * 60)}</TableCell>
+                <TableCell>{
+                function (t1, t2){
+                      const diff = getTimeDifference(t1,t2)
+                      return diff.hours + "hours " + diff.minutes + "minutes"
+                }(new Date(e.arrival), new Date(e.departure))  }
+          </TableCell>
                 <TableCell>{editLink && editLink(e)}</TableCell>
 
               </TableRow>

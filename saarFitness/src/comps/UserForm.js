@@ -275,7 +275,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              
+
               fullWidth
               onChange={onChange}
               label='Full Name'
@@ -294,7 +294,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              
+
               onChange={onChange}
               fullWidth
               label='Address'
@@ -313,7 +313,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              
+
               onChange={onChange}
               fullWidth
               value={userdata.dob}
@@ -343,7 +343,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              
+
               fullWidth
               value={userdata.phone}
               onChange={onChange}
@@ -363,7 +363,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              
+
               fullWidth
               type='email'
               onChange={onChange}
@@ -388,7 +388,7 @@ export const UserForm = ({
               name='height'
               label='Height'
               value={userdata.height}
-              placeholder='Height'
+              placeholder='Height in cm'
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -438,7 +438,7 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-              
+
               fullWidth
               type='number'
               name='emergency_phone'
@@ -506,7 +506,7 @@ export const UserForm = ({
                 <Grid key={i}>
                   <TextField
                     sx={{ marginLeft: 10, marginTop: 10 }}
-                    
+
                     fullWidth
                     name='year'
                     type='number'
@@ -525,7 +525,7 @@ export const UserForm = ({
                     }}
                   />
                   <TextField
-                    
+
                     style={{ marginTop: '10px' }}
                     fullWidth
                     name='detail'
@@ -554,7 +554,7 @@ export const UserForm = ({
                     }}
                 sx={{marginTop: 2, marginLeft: 10}}
                     defaultValue={c.type.length > 0 ? c.type : 'physical'}
-                    
+
                   >
                     <MenuItem value='medical'>Medical</MenuItem>
                     <MenuItem value='physical'>Physical</MenuItem>

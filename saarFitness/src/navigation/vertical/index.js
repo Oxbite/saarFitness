@@ -55,6 +55,12 @@ const navigation = () => {
       icon: AccountArrowRight,
       path: '/attendance',
       openInNewTab: false
+    },
+    {
+      title: 'Staff Attendance',
+      icon: AccountArrowRight,
+      path: '/attendance/staff',
+      openInNewTab: false
     }
     // {
     //   sectionTitle: 'User Interface'
