@@ -19,6 +19,7 @@ import Button from '@mui/material/Button'
 import axios from 'axios'
 import { validateTime } from '@mui/x-date-pickers/internals'
 import { useEffect } from 'react'
+import OxbiteTable from './OxbiteTable'
 
 const ButtonStyled = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -36,6 +37,96 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
     marginTop: theme.spacing(4)
   }
 }))
+
+
+export function StaffAttendance({data}) {
+  const [attendances, setData] = useState([...data]);
+  const setAttendance = async (c_id, idx = -1) => {
+          // call to api to edit attendance departure (add departure field)
+      const nAt = [...attendances]
+      if (nAt[idx].arrival){
+        nAt[idx].departure = new Date().toISOString()
+      } else {
+        nAt[idx].arrival = new Date().toISOString();
+      }
+      const at = {
+        staff: nAt[idx].id,
+        arrival: nAt[idx].arrival,
+        departure: nAt[idx].departure
+      }
+      if(nAt[idx].attendance_id) {
+        at.id = nAt[idx].attendance_id
+      }
+      const ids = await axios.post('/api/staffAttendance', { attendance: {}})
+      if (ids.data.data.length > 0) {
+        nAt[idx].attendance_id = ids.data.data[0];
+      }
+      setData(nAt)
+  }
+  return (
+    <OxbiteTable rows={attendances} headers={["name", "set", "edit"]} filler = {(attendance, index)=> {
+      console.log("attendance in table: ", index, attendance)
+      return (
+        <>
+        <TableCell>{attendance.fname}</TableCell>
+        <TableCell>
+          {!attendance.arrival ? (
+            <>
+              <ButtonStyled
+                component='label'
+                variant='contained'
+                onClick={() => {
+                  setAttendance(attendance.id, index)
+                }}
+              >
+                Set Arrived
+              </ButtonStyled>
+            </>
+          ) : (
+            <>
+              <ButtonStyled
+                component='label'
+                variant='contained'
+                onClick={() => {
+                  setAttendance(attendance.id, index)
+                }}
+                disabled={attendance && attendance.departure != undefined ? true : false}
+              >
+                Set Departed
+              </ButtonStyled>
+              <div>
+                {`arrived At: ${attendance.arrival}` } <br />
+                {`departed At: ${attendance.departure ?? "not set "}` }<br />
+                {`Hours : ${!attendance.departure ? "not departed yet" :  getHoursDifference(new Date(attendance.arrival), new Date(attendance.departure))}`}
+            </div>
+            </>
+          )}
+        </TableCell>
+        <TableCell align='right'>
+          {!attendance.attendance_id ? (
+            <Link href={'/attendance/staff/byuser/' + attendance.id}>
+              <Typography color={'white'} style={{ cursor: 'pointer' }}>
+                custom Attendance
+              </Typography>
+            </Link>
+          ) : (
+            <Link href={'/attendance/' + attendance.attendance_id}>
+              <Typography color={'white'} style={{ cursor: 'pointer' }}>
+                custom Attendance
+              </Typography>
+            </Link>
+          )}
+        </TableCell>
+      </>
+      )
+    }} />
+  )
+}
+
+function getHoursDifference(date1, date2) {
+  const timeDifference = Math.abs(date1.getTime() - date2.getTime());
+  return timeDifference / (1000 * 60 * 60); // milliseconds to hours
+}
 
 export function AttendanceDate({ cust, att }) {
   const [attendances, setAttendances] = useState([...att])
@@ -82,7 +173,6 @@ export function AttendanceDate({ cust, att }) {
               <TableCell align='right'>Edit</TableCell>
             </TableRow>
           </TableHead>
-
           <TableBody>
             {attendances.length > 0 &&
               attendances.map(e => {
@@ -148,7 +238,6 @@ export const AttendanceTable = ({ customers, att = [] }) => {
               <TableCell align='right'>Edit</TableCell>
             </TableRow>
           </TableHead>
-
           <TableBody>
             {customers.length > 0 &&
               customers.map(e => {
@@ -234,7 +323,8 @@ export function validdatetime(inputString) {
 
 export function AttendanceForm({
   user,
-  attendance = { arrival: dateToString(new Date()), departure: dateToString(new Date()) }
+  attendance = { arrival: dateToString(new Date()), departure: dateToString(new Date()) },
+  postto = '/api/saveAttendance'
 }) {
   const [err, setErr] = useState()
   attendance = {
@@ -260,7 +350,7 @@ export function AttendanceForm({
           values.arrival = new Date(today.arrival).toISOString()
           values.departure = new Date(today.departure).toISOString()
           values.customer = user.id
-          await axios.post('/api/saveAttendance', { attendance: values })
+          await axios.post(postto, { attendance: values })
           window.location.reload()
         }}
       >
@@ -311,7 +401,7 @@ export function AttendanceForm({
   )
 }
 
-export function AttendanceListUser({ attendances = [], user = {} }) {
+export function AttendanceListUser({ attendances = [], editLink}) {
   console.log(attendances)
   return (
     <TableContainer component={Paper}>
@@ -321,15 +411,18 @@ export function AttendanceListUser({ attendances = [], user = {} }) {
             <TableCell>Arrived at</TableCell>
             <TableCell align='left'>left at</TableCell>
             <TableCell align='left'>hours spent</TableCell>
+            <TableCell align='left'>Edit</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {attendances.map((e, i) => {
             return (
-              <TableRow>
+              <TableRow key= {i}>
                 <TableCell>{dateToString(new Date(e.arrival))}</TableCell>
                 <TableCell>{dateToString(new Date(e.departure))}</TableCell>
                 <TableCell>{(new Date(e.departure) - new Date(e.arrival)) / (1000 * 60 * 60)}</TableCell>
+                <TableCell>{editLink && editLink(e)}</TableCell>
+
               </TableRow>
             )
           })}

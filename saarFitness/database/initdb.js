@@ -56,6 +56,7 @@ db.schema
     console.error('Error creating "attendance" table:', error)
   })
 
+
 db.schema
   .createTable('customer', function (table) {
     table.increments('id').primary()
