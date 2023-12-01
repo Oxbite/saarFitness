@@ -90,7 +90,7 @@ export function TrainerForm({trainerx = {trainer: '', period: '', start_date: ''
       >
         <Grid item xs={12} sm={6}>
           <TextField
-            required
+            
             onChange={onChange}
             fullWidth
             value={trainer.start_date}
@@ -136,7 +136,7 @@ export function TrainerForm({trainerx = {trainer: '', period: '', start_date: ''
         </Grid>
         <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
           <TextField
-            required
+            
             fullWidth
             onChange={onChange}
             type='number'
@@ -237,7 +237,7 @@ export default function SubscriptionForm({
       >
         <Grid item xs={12} sm={6}>
           <TextField
-            required
+            
             onChange={onChange}
             fullWidth
             value={subs.start_date}
@@ -267,7 +267,7 @@ export default function SubscriptionForm({
         </Grid>
         <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
           <TextField
-            required
+            
             fullWidth
             onChange={onChange}
             type='number'

@@ -250,16 +250,13 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-              <ImgStyled src={logo} alt='Profile Pic' sx={{ marginLeft: 'auto' }} />
-              <Typography variant='h6' sx={{ marginLeft: 'auto' }}>
-                SAAR FITNESS
-              </Typography>
+              <ImgStyled src={logo} alt='Profile Pic' sx={{ marginLeft: 'auto', height: 200 }} />
             </Box>
           </Grid>
 
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               onChange={onChange}
               label='Full Name'
@@ -277,7 +274,7 @@ export const UserForm = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               onChange={onChange}
               fullWidth
               label='date of birth'
@@ -296,7 +293,7 @@ export const UserForm = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               onChange={onChange}
               label='Joined Date'
@@ -355,15 +352,14 @@ export const UserForm = ({
               <InputLabel>Shift</InputLabel>
               <Select onChange={onChange} label='Training type' name='shift' defaultValue={userdata.shift ?? 'active'}>
                 <MenuItem value='morning'>Morning</MenuItem>
-                <MenuItem value='day'>Day</MenuItem>
-                <MenuItem value='night'>Night</MenuItem>
+                <MenuItem value='evening'>Evening</MenuItem>
+                <MenuItem value='both'>both</MenuItem>
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={12} sm={6}>
             <TextField
-              required
+              
               fullWidth
               label='address'
               placeholder='address'

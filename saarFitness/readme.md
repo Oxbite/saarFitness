@@ -9,6 +9,8 @@
 - cd database
 - node initdb.js
 - cd ..
+- cd cdn 
+- node index.js
 - npm i
 - npm run build
 - npm run start

@@ -56,7 +56,8 @@ export function UserTableAll({ customers = [], total }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {rows.sort((a, b) => a.fname.localeCompare(b.fname))
+            .map(row => (
               <TableRow hover key={row.fname} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -119,7 +120,8 @@ export default function UserTable({ customers = [], total }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {rows.sort((a, b) => a.fname.localeCompare(b.fname))
+            .map(row => (
               <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
