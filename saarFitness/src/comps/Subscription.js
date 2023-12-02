@@ -90,7 +90,7 @@ export function TrainerForm({trainerx = {trainer: '', period: '', start_date: ''
       >
         <Grid item xs={12} sm={6}>
           <TextField
-            
+
             onChange={onChange}
             fullWidth
             value={trainer.start_date}
@@ -136,7 +136,7 @@ export function TrainerForm({trainerx = {trainer: '', period: '', start_date: ''
         </Grid>
         <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
           <TextField
-            
+
             fullWidth
             onChange={onChange}
             type='number'
@@ -166,6 +166,27 @@ export function TrainerForm({trainerx = {trainer: '', period: '', start_date: ''
               <FormControlLabel value='1' label='paid' control={<Radio />} />
               <FormControlLabel value='0' label='not paid' control={<Radio />} />
             </RadioGroup>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+          <TextField
+            fullWidth
+            onChange={onChange}
+            type='text'
+            label='Payment Method'
+            placeholder='eg. Phone / Online / e-sewa'
+            name='payment_method'
+            value={subs.payment_method ?? ""}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <AccountOutline />
+                </InputAdornment>
+              )
+            }}
+          />
           </FormControl>
         </Grid>
 
@@ -200,7 +221,7 @@ export function TrainerForm({trainerx = {trainer: '', period: '', start_date: ''
 }
 
 export default function SubscriptionForm({
-  subscription = { start_date: '', end_date: '', period: '', price: '', paid: '0' },
+  subscription = { start_date: '', end_date: '', period: '', payment_method: '',price: '', paid: '0' },
   postto = '/api/addSubscription',
   user
 }) {
@@ -237,7 +258,6 @@ export default function SubscriptionForm({
       >
         <Grid item xs={12} sm={6}>
           <TextField
-            
             onChange={onChange}
             fullWidth
             value={subs.start_date}
@@ -267,7 +287,6 @@ export default function SubscriptionForm({
         </Grid>
         <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
           <TextField
-            
             fullWidth
             onChange={onChange}
             type='number'
@@ -299,7 +318,26 @@ export default function SubscriptionForm({
             </RadioGroup>
           </FormControl>
         </Grid>
-
+        <Grid item xs={12} sm={6}>
+          <FormControl>
+          <TextField
+            fullWidth
+            onChange={onChange}
+            type='text'
+            label='Payment Method'
+            placeholder='eg. Phone / Online / e-sewa'
+            name='payment_method'
+            value={subs.payment_method ?? ""}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <AccountOutline />
+                </InputAdornment>
+              )
+            }}
+          />
+          </FormControl>
+        </Grid>
         <Button type='submit' variant='contained' color='primary' style={{ marginTop: '30px' }}>
           REGISTER
     </Button>

@@ -85,6 +85,7 @@ db.schema
     table.increments('id').primary()
     table.integer('customer').notNullable()
     table.string('type').notNullable()
+    table.string('month').notNullable()
     table.integer('year').notNullable()
     table.text('detail')
   })

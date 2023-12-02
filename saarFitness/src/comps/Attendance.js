@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import InputAdornment from '@mui/material/InputAdornment'
 import Grid from '@mui/material/Grid'
@@ -17,8 +16,6 @@ import { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import axios from 'axios'
-import { validateTime } from '@mui/x-date-pickers/internals'
-import { useEffect } from 'react'
 import OxbiteTable from './OxbiteTable'
 
 const ButtonStyled = styled(Button)(({ theme }) => ({
@@ -142,11 +139,6 @@ function getTimeDifference(date1, date2) {
 export function AttendanceDate({ cust, att }) {
   const [attendances, setAttendances] = useState([...att])
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
-
-  // useEffect(() => {
-  //   const f = async () => {}
-  //   f()
-  // }, [date])
   return (
     <CardContent>
       <Typography variant='h3' sx={{ marginBottom: 2 }}>
@@ -154,7 +146,6 @@ export function AttendanceDate({ cust, att }) {
       </Typography>
       <Grid item xs={12} sm={6}>
         <TextField
-
           onChange={async e => {
             const ndate = new Date(e.target.value).toISOString().split('T')[0]
             const res = await axios.get('/api/getAttendance', {
@@ -194,7 +185,7 @@ export function AttendanceDate({ cust, att }) {
                     <TableCell>{e.departure ? dateToString(new Date(e.arrival)) : 'not set'}</TableCell>
                     <TableCell align='right'>
                       {
-                        <Link href={'/attendance/' + e.id}>
+                        <Link href={'/attendance/' + e.id} passHref>
                           <Typography color={'white'} style={{ cursor: 'pointer' }}>
                             edit Attendance
                           </Typography>

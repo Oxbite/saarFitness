@@ -333,7 +333,7 @@ export const UserForm = ({
           <Grid item xs={12} sm={6}>
             <FormControl>
               <FormLabel sx={{ fontSize: '0.875rem' }}>Gender</FormLabel>
-              <RadioGroup row defaultValue='male' aria-label='gender' name='gender' onChange={onChange}>
+              <RadioGroup row defaultValue={userdata.gender} aria-label='gender' name='gender' onChange={onChange}>
                 <FormControlLabel value='male' label='Male' control={<Radio />} />
                 <FormControlLabel value='female' label='Female' control={<Radio />} />
                 <FormControlLabel value='other' label='Other' control={<Radio />} />
@@ -363,7 +363,6 @@ export const UserForm = ({
 
           <Grid item xs={12} sm={6}>
             <TextField
-
               fullWidth
               type='email'
               onChange={onChange}
@@ -525,7 +524,26 @@ export const UserForm = ({
                     }}
                   />
                   <TextField
+                    sx={{ marginLeft: 10, marginTop: 10 }}
 
+                    fullWidth
+                    name='month'
+                    type='text'
+                    label='Month'
+                    placeholder='Month of injury'
+                    onChange={e => {
+                      onConditionChange(e, i)
+                    }}
+                    value={c.month ?? ""}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <LocalHospitalIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <TextField
                     style={{ marginTop: '10px' }}
                     fullWidth
                     name='detail'
@@ -554,7 +572,6 @@ export const UserForm = ({
                     }}
                 sx={{marginTop: 2, marginLeft: 10}}
                     defaultValue={c.type.length > 0 ? c.type : 'physical'}
-
                   >
                     <MenuItem value='medical'>Medical</MenuItem>
                     <MenuItem value='physical'>Physical</MenuItem>
